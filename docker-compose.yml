@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  intaxbd:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: intaxbd-app
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - intaxbd-network
+
+networks:
+  intaxbd-network:
+    driver: bridge
