@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Phone, MessageCircle } from 'lucide-react';
 import logo from '../../shared/assets/logo.png';
 
 export const Navbar = () => {
@@ -14,7 +13,8 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="bg-white/30 backdrop-blur-xl border border-white/30 rounded-2xl px-8 py-4 shadow-lg">
           <div className="flex items-center justify-between">
-            <motion.div
+            <motion.a
+              href="#home"
               className="flex items-center gap-3"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400 }}
@@ -25,67 +25,81 @@ export const Navbar = () => {
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-700 bg-clip-text text-transparent">
                 InTaxBD
               </span>
-            </motion.div>
+            </motion.a>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link
-                to="/"
+              <a
+                href="#home"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Home
-              </Link>
-              <Link
-                to="/services"
+              </a>
+              <a
+                href="#services"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Services
-              </Link>
-              <Link
-                to="/pricing"
+              </a>
+              <a
+                href="#pricing"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Pricing
-              </Link>
-              <Link
-                to="/how-it-works"
+              </a>
+              <a
+                href="#how-it-works"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 How It Works
-              </Link>
-              <Link
-                to="/documents"
+              </a>
+              <a
+                href="#documents"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Documents
-              </Link>
-              <Link
-                to="/faq"
+              </a>
+              <a
+                href="#faq"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 FAQ
-              </Link>
-              <Link
-                to="/about"
+              </a>
+              <a
+                href="#about"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 About
-              </Link>
-              <Link
-                to="/contact"
+              </a>
+              <a
+                href="#contact"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Contact
-              </Link>
+              </a>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center gap-2"
-            >
-              <Phone className="w-4 h-4" />
-              Call Now
-            </motion.button>
+            <div className="flex items-center gap-3">
+              <motion.a
+                href="https://wa.me/01717170575?text=We%20provide%20professional%20tax%20advisory%20services%20covering%20income%20tax%2C%20VAT%2C%20compliance%2C%20and%20return%20filing%20for%20individuals%20and%20businesses.%20I%20would%20be%20glad%20to%20discuss%20how%20I%20can%20support%20your%20tax%20requirements."
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-green-500 text-white px-4 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </motion.a>
+              <motion.a
+                href="tel:01717170575"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center gap-2"
+              >
+                <Phone className="w-4 h-4" />
+                Call Now
+              </motion.a>
+            </div>
           </div>
         </div>
       </div>
