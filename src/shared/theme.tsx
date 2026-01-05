@@ -12,14 +12,14 @@ export interface Theme {
 }
 
 const defaultTheme: Theme = {
-  primary: '#06b6d4', // cyan-500
-  secondary: '#3b82f6', // blue-500
-  accent: '#0ea5e9', // sky-500
+  primary: '#003366', // Blue
+  secondary: '#78C043', // Green
+  accent: '#003366', // Blue (same as primary)
   background: '#ffffff',
-  surface: '#f8fafc', // slate-50
-  text: '#1e293b', // slate-800
-  textSecondary: '#64748b', // slate-500
-  border: '#e2e8f0', // slate-200
+  surface: '#f8fafc', // Keep light
+  text: '#333333', // Dark Grey
+  textSecondary: '#64748b', // Keep medium
+  border: '#e2e8f0', // Keep light border
 };
 
 interface ThemeContextType {

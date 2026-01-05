@@ -44,8 +44,8 @@ function App() {
 
       <Navbar />
 
-      <main className="relative pt-32 pb-20">
-        <section id="home" className="max-w-7xl mx-auto px-6 mb-20">
+      <main className="relative pt-24 sm:pt-32 pb-12 sm:pb-20">
+        <section id="home" className="max-w-7xl mx-auto px-4 sm:px-6 mb-12 sm:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-xl text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed"
+              className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed"
             >
               Simplify your tax compliance with professional guidance. We offer
               transparent, affordable tax return services for individuals and
@@ -80,19 +80,19 @@ function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200"
               >
                 Get Started
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white/40 backdrop-blur-xl border border-white/30 text-gray-800 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
+                className="bg-white/40 backdrop-blur-xl border border-white/30 text-gray-800 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
               >
                 Learn More
               </motion.button>
@@ -149,7 +149,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="services" className="max-w-7xl mx-auto px-6 py-20">
+        <section id="services" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ function App() {
                 Our Tax Services
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
               Comprehensive tax solutions for individuals and businesses in Bangladesh
             </p>
           </motion.div>
@@ -279,7 +279,7 @@ function App() {
 
         <PricingTable />
 
-        <section id="how-it-works" className="max-w-7xl mx-auto px-6 py-20">
+        <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -292,7 +292,7 @@ function App() {
                 How It Works
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
               Simple, secure, and hassle-free tax filing process
             </p>
           </motion.div>
@@ -380,7 +380,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="documents" className="max-w-7xl mx-auto px-6 py-20">
+        <section id="documents" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -393,7 +393,7 @@ function App() {
                 Documents Required
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
               Prepare these documents for smooth tax filing
             </p>
             <motion.button
@@ -508,7 +508,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="faq" className="max-w-4xl mx-auto px-6 py-20">
+        <section id="faq" className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -521,7 +521,7 @@ function App() {
                 Frequently Asked Questions
               </span>
             </h2>
-            <p className="text-xl text-gray-700">
+            <p className="text-lg sm:text-xl text-gray-700">
               Find answers to common tax-related questions
             </p>
           </motion.div>
@@ -622,7 +622,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="about" className="max-w-7xl mx-auto px-6 py-20">
+        <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -636,7 +636,7 @@ function App() {
                 About InTaxBD
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
               Your trusted partner for professional tax advisory services in Bangladesh
             </p>
           </motion.div>
@@ -754,7 +754,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="contact" className="max-w-7xl mx-auto px-6 py-20">
+        <section id="contact" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -767,7 +767,7 @@ function App() {
                 Contact Us
               </span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
               Get in touch with our tax experts for personalized assistance
             </p>
           </motion.div>
@@ -916,7 +916,7 @@ function App() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto px-6 mt-20"
+          className="max-w-4xl mx-auto px-4 sm:px-6 mt-12 sm:mt-20"
         >
           <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl p-12 shadow-2xl text-center">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -939,7 +939,7 @@ function App() {
       </main>
 
       <footer className="relative mt-20 bg-white/20 backdrop-blur-xl border-t border-white/30 py-8">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             <div>
               <h3 className="text-lg font-bold text-gray-800 mb-2">InTaxBD</h3>
