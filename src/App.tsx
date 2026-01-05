@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 import { CustomCursor } from './presentation/components/ui/CustomCursor';
 import { Navbar } from './presentation/components/Navbar';
 import { PricingTable } from './presentation/components/PricingTable';
@@ -7,6 +8,56 @@ import { CheckCircle, Users, Award, FileText, Briefcase, Shield, Phone, Calculat
 
 function App() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  // Contact form state
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Form handlers
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // EmailJS configuration - you'll need to set these up in your EmailJS account
+      const serviceId = 'your_service_id'; // Replace with your EmailJS service ID
+      const templateId = 'your_template_id'; // Replace with your EmailJS template ID
+      const publicKey = 'your_public_key'; // Replace with your EmailJS public key
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        from_phone: formData.phone,
+        message: formData.message,
+        to_email: 'intaxbd.ca@gmail.com', // Your email address
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setSubmitStatus('success');
+      setFormData({ name: '', phone: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Email send failed:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -857,13 +908,39 @@ function App() {
               className="bg-white/40 backdrop-blur-xl border border-white/30 rounded-2xl p-8 shadow-lg"
             >
               <h3 className="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
-              <form className="space-y-6">
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800"
+                >
+                  ✅ Message sent successfully! We'll get back to you soon.
+                </motion.div>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800"
+                >
+                  ❌ Failed to send message. Please try again or contact us directly.
+                </motion.div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Name *</label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Your full name"
                   />
                 </div>
@@ -872,8 +949,12 @@ function App() {
                   <label className="block text-gray-700 font-medium mb-2">Phone *</label>
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="01717170575"
                   />
                 </div>
@@ -882,8 +963,12 @@ function App() {
                   <label className="block text-gray-700 font-medium mb-2">Email *</label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -891,20 +976,38 @@ function App() {
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Message</label>
                   <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Tell us about your tax needs..."
                   />
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-5 h-5" />
-                  Send Message
+                  {isSubmitting ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                      />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Message
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>
