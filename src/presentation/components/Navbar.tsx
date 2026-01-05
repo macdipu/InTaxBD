@@ -104,47 +104,61 @@ export const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden mt-4 pt-4 border-t border-white/30"
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="md:hidden mt-4"
             >
-              {/* Mobile Navigation Links */}
-              <div className="flex flex-col gap-4 mb-6">
-                {navItems.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 py-2 px-2 rounded-lg hover:bg-white/20"
+              <div className="bg-white/90 backdrop-blur-xl border border-white/30 rounded-2xl shadow-xl overflow-hidden">
+                {/* Mobile Navigation Links */}
+                <div className="flex flex-col gap-1 p-2">
+                  {navItems.map((item, index) => (
+                    <motion.a
+                      key={item.href}
+                      href={item.href}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.2 }}
+                      className="text-gray-800 hover:text-primary font-medium transition-all duration-200 py-3 px-4 rounded-xl hover:bg-primary/10 active:bg-primary/15"
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </motion.a>
+                  ))}
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 mx-4"></div>
+
+                {/* Mobile Action Buttons */}
+                <div className="flex flex-col gap-2 p-4">
+                  <motion.a
+                    href="https://wa.me/01717170575?text=We%20provide%20professional%20tax%20advisory%20services%20covering%20income%20tax%2C%20VAT%2C%20compliance%2C%20and%20return%20filing%20for%20individuals%20and%20businesses.%20I%20would%20be%20glad%20to%20discuss%20how%20I%20can%20support%20your%20tax%20requirements."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.2 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-green-500 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center justify-center gap-2"
                     onClick={closeMenu}
                   >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-
-              {/* Mobile Action Buttons */}
-              <div className="flex flex-col gap-3">
-                <motion.a
-                  href="https://wa.me/01717170575?text=We%20provide%20professional%20tax%20advisory%20services%20covering%20income%20tax%2C%20VAT%2C%20compliance%2C%20and%20return%20filing%20for%20individuals%20and%20businesses.%20I%20would%20be%20glad%20to%20discuss%20how%20I%20can%20support%20your%20tax%20requirements."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-green-500 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center justify-center gap-2"
-                  onClick={closeMenu}
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp
-                </motion.a>
-                <motion.a
-                  href="tel:01717170575"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center justify-center gap-2"
-                  onClick={closeMenu}
-                >
-                  <Phone className="w-4 h-4" />
-                  Call Now
-                </motion.a>
+                    <MessageCircle className="w-4 h-4" />
+                    WhatsApp
+                  </motion.a>
+                  <motion.a
+                    href="tel:01717170575"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 0.2 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-r from-primary to-secondary text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-200 flex items-center justify-center gap-2"
+                    onClick={closeMenu}
+                  >
+                    <Phone className="w-4 h-4" />
+                    Call Now
+                  </motion.a>
+                </div>
               </div>
             </motion.div>
           )}
