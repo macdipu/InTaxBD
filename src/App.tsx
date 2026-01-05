@@ -266,13 +266,14 @@ function App() {
             <p className="text-cyan-50 text-lg mb-8">
               Contact our experts for personalized tax consultation
             </p>
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200"
+              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200 inline-block text-center"
             >
               Get Free Consultation
-            </motion.button>
+            </motion.a>
           </motion.div>
         </section>
 
@@ -368,13 +369,14 @@ function App() {
             <p className="text-cyan-50 text-lg mb-8">
               Get started with our expert tax consultants today
             </p>
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200"
+              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200 inline-block text-center"
             >
               Book Free Consultation
-            </motion.button>
+            </motion.a>
           </motion.div>
         </section>
 
@@ -609,13 +611,14 @@ function App() {
             <p className="text-cyan-50 mb-6">
               Our tax experts are here to help you with any specific queries
             </p>
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-cyan-600 px-8 py-3 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-shadow duration-200"
+              className="bg-white text-cyan-600 px-8 py-3 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-shadow duration-200 inline-block text-center"
             >
               Contact Us
-            </motion.button>
+            </motion.a>
           </motion.div>
         </section>
 
@@ -923,13 +926,14 @@ function App() {
               Let our experts handle your tax returns professionally and
               efficiently.
             </p>
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200"
+              className="bg-white text-cyan-600 px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow duration-200 inline-block text-center"
             >
               Contact Us Today
-            </motion.button>
+            </motion.a>
           </div>
         </motion.section>
       </main>
