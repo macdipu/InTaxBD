@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Loader2 } from 'lucide-react';
-import { FeePackage } from '../domain/FeePackage';
-import { fetchFeePackages } from '../data/feeRepository';
+import { FeePackage } from '../../domain/FeePackage';
+import { fetchFeePackages } from '../../data/feeRepository';
 
 export const PricingTable = () => {
   const [packages, setPackages] = useState<FeePackage[]>([]);
