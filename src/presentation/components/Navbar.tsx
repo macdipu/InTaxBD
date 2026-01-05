@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import logo from '../../shared/assets/logo.png';
 
 export const Navbar = () => {
@@ -27,30 +28,54 @@ export const Navbar = () => {
             </motion.div>
 
             <div className="hidden md:flex items-center gap-8">
-              <a
-                href="#home"
+              <Link
+                to="/"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Home
-              </a>
-              <a
-                href="#services"
+              </Link>
+              <Link
+                to="/services"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Services
-              </a>
-              <a
-                href="#pricing"
+              </Link>
+              <Link
+                to="/pricing"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Pricing
-              </a>
-              <a
-                href="#about"
+              </Link>
+              <Link
+                to="/how-it-works"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                How It Works
+              </Link>
+              <Link
+                to="/documents"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                Documents
+              </Link>
+              <Link
+                to="/faq"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                FAQ
+              </Link>
+              <Link
+                to="/about"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 About
-              </a>
+              </Link>
+              <Link
+                to="/contact"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                Contact
+              </Link>
             </div>
 
             <motion.button
