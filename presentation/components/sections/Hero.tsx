@@ -32,7 +32,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-lg text-gray-300 max-w-xl leading-relaxed">
-            Use this tag line. Simplifying Tax for Individuals & Businesses- expert guidance for Tax, VAT, Company & Compliance
+            Simplifying Tax for Individuals & Businesses- expert guidance for Tax, VAT, Company & Compliance
           </p>
           
           <div className="flex flex-wrap gap-4">
