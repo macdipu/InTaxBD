@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '../ui/GlassComponents';
+import logo from '@/assets/png/logo.jpg';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -97,10 +98,7 @@ const Navbar: React.FC = () => {
             onClick={(e) => handleNavClick(e, '#home')}
             className="flex items-center gap-2 group cursor-pointer"
           >
-             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-secondary to-blue-600 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(14,165,233,0.5)] group-hover:scale-105 transition-transform">
-               IT
-             </div>
-             <span className="text-xl font-bold tracking-tight text-white group-hover:text-brand-secondary transition-colors">InTaxBD</span>
+             <img src={logo} alt="InTaxBD" className="h-8 w-auto object-contain group-hover:scale-105 transition-transform" />
           </a>
 
           {/* Desktop Links */}
