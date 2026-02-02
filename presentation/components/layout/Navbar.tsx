@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '../ui/GlassComponents';
-import logo from '@/assets/jpg/logo.jpg';
+import logo from '@/assets/png/logo.png';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
