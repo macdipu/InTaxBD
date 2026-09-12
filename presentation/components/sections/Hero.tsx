@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
         <div className="space-y-8 animate-fade-in-up pt-10 md:pt-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-brand-secondary/30">
             <span className="w-2 h-2 rounded-full bg-brand-success animate-pulse"></span>
-            <span className="text-xs font-medium text-brand-secondary uppercase tracking-wider">Tax Season 2024-25</span>
+            <span className="text-xs font-medium text-brand-secondary uppercase tracking-wider">Tax Season 2025-26</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
