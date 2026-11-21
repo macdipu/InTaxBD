@@ -74,7 +74,7 @@ export const Section: React.FC<{
 // --- Section heading: words rise out of a mask, intro fades in after ---
 export const SectionHeading: React.FC<{
   title: string;
-  intro?: string;
+  intro?: ReactNode;
   onDark?: boolean;
 }> = ({ title, intro, onDark = false }) => (
   <div data-reveal>

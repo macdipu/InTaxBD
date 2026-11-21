@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
-import { Stamp, Tick } from '../ui/Motion';
+import { Stamp, Tick, PenMark } from '../ui/Motion';
 import { useBootReady } from '../../motion/hooks';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 import { scrollToId } from '../layout/Navbar';
@@ -58,7 +58,12 @@ const Process: React.FC = () => {
           <div className="lg:sticky lg:top-28">
             <SectionHeading
               title="Six steps from first message to filed return"
-              intro="You are only needed at the start and at confirmation. We handle the rest."
+              intro={
+                <>
+                  You are only needed at <PenMark delay={500}>the start</PenMark> and at{' '}
+                  <PenMark delay={800}>confirmation</PenMark>. We handle the rest.
+                </>
+              }
             />
             <Button
               variant="primary"

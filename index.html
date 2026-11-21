@@ -195,6 +195,21 @@
         transition: stroke-dashoffset .35s var(--ease-in-out) var(--d, 0ms), stroke-opacity 0s linear var(--d, 0ms);
       }
 
+      /* pen: hand-drawn underline in the logo's check-mark green */
+      .pen-u { overflow: visible; }
+      .pen-u path {
+        stroke: #7CB82F;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        stroke-opacity: 0;
+      }
+      [data-in] .pen-u path { animation: pen-draw .6s var(--ease-in-out) var(--d, 0ms) both; }
+      @keyframes pen-draw {
+        0%   { stroke-dashoffset: 1; stroke-opacity: 0; }
+        1%   { stroke-opacity: 1; }
+        100% { stroke-dashoffset: 0; stroke-opacity: 1; }
+      }
+
       /* photo prints upward */
       .rv-print { clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--ease-out) var(--d, 0ms); }
       .rv-print img { transform: scale(1.08); transition: transform 1.4s var(--ease-out) var(--d, 0ms); }
@@ -325,6 +340,7 @@
         .mw > span, .rv-fade, .rv-rule, .rv-bar, .rv-print img { transform: none !important; opacity: 1 !important; }
         .leader, .rv-print, .rv-open { clip-path: none !important; }
         .tick path { stroke-dashoffset: 0 !important; stroke-opacity: 1 !important; }
+        .pen-u path { animation: none !important; stroke-dashoffset: 0 !important; stroke-opacity: 1 !important; }
         .stamp.on, .swap-in, .pop-in, .shake, .thud, [data-in] .ping::after, .ping.go::after, .ring-pulse { animation: none !important; }
         .slip { opacity: 1 !important; transform: none !important; transition: none !important; }
         .nudge, .nudge-line { transition: none !important; }

@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
-import { Odometer, Rule } from '../ui/Motion';
+import { Odometer, Rule, PenMark } from '../ui/Motion';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 
 interface PricingProps {
@@ -53,7 +53,12 @@ const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
         <div className="lg:col-span-5">
           <SectionHeading
             title="One fee, set by your income"
-            intro="No hidden costs. The fee follows your total gross income or assets, and you see it before we start."
+            intro={
+              <>
+                <PenMark delay={500}>No hidden costs.</PenMark> The fee follows your total gross income or assets, and you
+                see it before we start.
+              </>
+            }
           />
           <div data-reveal className="relative mt-6 hidden max-w-md pl-4 lg:block">
             <span className="rv-bar absolute inset-y-0 left-0 w-[3px] rounded bg-leaf" aria-hidden="true" />

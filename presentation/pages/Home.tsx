@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import Hero from '../components/sections/Hero';
@@ -25,15 +25,6 @@ const Home: React.FC = () => {
   const contactVisible = useVisible('contact');
   const showBar = ready && !feeCardVisible && !contactVisible;
 
-  // One soft pulse on the WhatsApp button the first time the bar appears.
-  const [pulsed, setPulsed] = useState(false);
-  useEffect(() => {
-    if (showBar && !pulsed) {
-      const t = window.setTimeout(() => setPulsed(true), 6000);
-      return () => window.clearTimeout(t);
-    }
-  }, [showBar, pulsed]);
-
   return (
     <div className="relative">
       <Navbar />
@@ -58,12 +49,7 @@ const Home: React.FC = () => {
         <Button variant="outline" fullWidth href={contact.phoneHref}>
           <Phone className="h-4 w-4" aria-hidden="true" /> Call
         </Button>
-        <Button
-          variant="accent"
-          fullWidth
-          href={`https://wa.me/${contact.whatsappNumber}`}
-          className={pulsed ? 'ring-pulse' : ''}
-        >
+        <Button variant="accent" fullWidth href={`https://wa.me/${contact.whatsappNumber}`}>
           <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp
         </Button>
       </div>

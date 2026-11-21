@@ -154,3 +154,28 @@ export const Stamp: React.FC<{
     {children}
   </span>
 );
+
+// --- Pen: a hand-drawn underline that draws itself. Parent needs [data-reveal]. ---
+export const PenUnderline: React.FC<{ className?: string; delay?: number }> = ({ className = '', delay = 0 }) => (
+  <svg
+    viewBox="0 0 200 12"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    className={`pen-u ${className}`}
+    style={{ '--d': `${delay}ms` } as React.CSSProperties}
+  >
+    <path d="M3 8 C 40 3, 90 4, 130 6 S 185 9, 197 4" pathLength={1} fill="none" strokeWidth="2.6" strokeLinecap="round" />
+  </svg>
+);
+
+// Emphasise a word or phrase with the pen underline.
+export const PenMark: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
+  children,
+  delay = 0,
+  className = 'font-semibold text-ink',
+}) => (
+  <span className={`relative inline-block ${className}`}>
+    {children}
+    <PenUnderline className="absolute -bottom-1.5 left-0 h-2.5 w-full" delay={delay} />
+  </span>
+);

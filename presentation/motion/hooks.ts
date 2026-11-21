@@ -81,7 +81,8 @@ export const useInView = (ref: RefObject<Element | null>, margin = '0px 0px -10%
 };
 
 // Live visibility (not once) — used to show/hide the mobile action bar.
-export const useVisible = (id: string): boolean => {
+// `dep` re-attaches the observer when the element is replaced (e.g. design switch).
+export const useVisible = (id: string, dep?: unknown): boolean => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = document.getElementById(id);
@@ -89,6 +90,6 @@ export const useVisible = (id: string): boolean => {
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting));
     io.observe(el);
     return () => io.disconnect();
-  }, [id]);
+  }, [id, dep]);
   return visible;
 };

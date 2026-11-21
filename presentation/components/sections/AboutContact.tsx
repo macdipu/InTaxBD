@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Phone, Mail, Globe, MessageCircle, Loader2 } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
-import { MaskWords, Rule, Stamp } from '../ui/Motion';
+import { PenMark, Rule, Stamp } from '../ui/Motion';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 
 const fieldClass =
@@ -19,8 +19,79 @@ const validate = (f: Record<FormKey, string>): Errors => {
   return e;
 };
 
-const AboutContact: React.FC = () => {
+export const About: React.FC = () => {
   const leader = ContentRepository.getLeadership();
+  const expertise = ['Income tax', 'VAT', 'Regulatory compliance', 'Company affairs (RJSC)'];
+
+  return (
+    <>
+      <Section id="about">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          {/* Leader portrait: side by side with the caption on phones */}
+          <figure data-reveal className="flex items-end gap-5 sm:gap-8 lg:col-span-4 lg:block">
+            <div className="rv-print w-32 shrink-0 overflow-hidden rounded-xl sm:w-44 lg:w-56">
+              <img
+                src={leader.photo}
+                alt={`Portrait of ${leader.name}`}
+                width={720}
+                height={964}
+                loading="lazy"
+                className="aspect-[3/4] w-full object-cover object-top"
+              />
+            </div>
+            <figcaption className="rv-fade lg:mt-5" style={{ '--d': '400ms' } as React.CSSProperties}>
+              <p className="font-display text-xl font-semibold leading-tight tracking-tight sm:text-2xl">{leader.name}</p>
+              <p className="mt-0.5 text-[15px] font-medium text-brand">{leader.role}</p>
+              <ul className="mt-2 space-y-0.5 text-[13px] leading-snug text-muted sm:text-sm">
+                {leader.qualifications.map((q) => (
+                  <li key={q}>{q}</li>
+                ))}
+              </ul>
+            </figcaption>
+          </figure>
+
+          <div className="lg:col-span-8">
+            <SectionHeading
+              title="Simplifying tax for individuals, small businesses and companies"
+              intro="Expert guidance for Tax, VAT, Regulatory Compliance and Company Affairs (RJSC), from a team of income tax lawyers and qualified accountants."
+            />
+
+            <ul data-reveal className="mt-8 grid gap-x-8 gap-y-1 sm:grid-cols-2 md:mt-10">
+              {expertise.map((item, i) => (
+                <li key={item}>
+                  <Rule className="text-ink" delay={i * 90} />
+                  <p
+                    className="rv-fade py-3 font-display text-xl font-semibold tracking-tight"
+                    style={{ '--d': `${150 + i * 90}ms` } as React.CSSProperties}
+                  >
+                    {item}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <div data-reveal className="mt-10 rounded-xl bg-surface p-5 md:mt-12 md:p-8">
+              <h3 className="font-display text-2xl font-semibold tracking-tight">What we stand for</h3>
+              <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-ink/85">
+                We prepare every return with <PenMark delay={400}>integrity</PenMark>, file it in{' '}
+                <PenMark delay={700}>compliance</PenMark> with the Income Tax Act 2023, and check the figures with{' '}
+                <PenMark delay={1000}>precision</PenMark>. Your information is shared only with the NBR.
+              </p>
+              <div className="mt-6">
+                <p className="font-display text-xl font-semibold tracking-tight text-brand">{leader.name}</p>
+                <span className="mt-1.5 block w-48 border-t border-ink" aria-hidden="true" />
+                <p className="mt-1 text-[13px] text-muted">{leader.role}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+    </>
+  );
+};
+
+export const Contact: React.FC = () => {
   const contact = ContentRepository.getContact();
   const year = ContentRepository.getTaxYear();
   const [form, setForm] = useState<Record<FormKey, string>>({ name: '', phone: '', email: '', message: '' });
@@ -87,72 +158,8 @@ const AboutContact: React.FC = () => {
     'aria-describedby': errors[key] ? `e-${key}` : undefined,
   });
 
-  const expertise = ['Income tax', 'VAT', 'Regulatory compliance', 'Company affairs (RJSC)'];
-  const values = ['Integrity', 'Compliance', 'Precision'];
-
   return (
-    <>
-      {/* About */}
-      <Section id="about">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-          {/* Leader portrait: side by side with the caption on phones */}
-          <figure data-reveal className="flex items-end gap-5 sm:gap-8 lg:col-span-4 lg:block">
-            <div className="rv-print w-32 shrink-0 overflow-hidden rounded-xl sm:w-44 lg:w-56">
-              <img
-                src={leader.photo}
-                alt={`Portrait of ${leader.name}`}
-                width={720}
-                height={964}
-                loading="lazy"
-                className="aspect-[3/4] w-full object-cover object-top"
-              />
-            </div>
-            <figcaption className="rv-fade lg:mt-5" style={{ '--d': '400ms' } as React.CSSProperties}>
-              <p className="font-display text-xl font-semibold leading-tight tracking-tight sm:text-2xl">{leader.name}</p>
-              <p className="mt-0.5 text-[15px] font-medium text-brand">{leader.role}</p>
-              <ul className="mt-2 space-y-0.5 text-[13px] leading-snug text-muted sm:text-sm">
-                {leader.qualifications.map((q) => (
-                  <li key={q}>{q}</li>
-                ))}
-              </ul>
-            </figcaption>
-          </figure>
 
-          <div className="lg:col-span-8">
-            <SectionHeading
-              title="Simplifying tax for individuals, small businesses and companies"
-              intro="Expert guidance for Tax, VAT, Regulatory Compliance and Company Affairs (RJSC), from a team of income tax lawyers and qualified accountants."
-            />
-
-            <ul data-reveal className="mt-8 grid gap-x-8 gap-y-1 sm:grid-cols-2 md:mt-10">
-              {expertise.map((item, i) => (
-                <li key={item}>
-                  <Rule className="text-ink" delay={i * 90} />
-                  <p
-                    className="rv-fade py-3 font-display text-xl font-semibold tracking-tight"
-                    style={{ '--d': `${150 + i * 90}ms` } as React.CSSProperties}
-                  >
-                    {item}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <div data-reveal className="mt-10 rounded-xl bg-surface p-5 md:mt-12 md:p-8">
-              <h3 className="text-sm font-medium text-muted">What we stand for</h3>
-              <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 md:gap-x-8">
-                {values.map((v, i) => (
-                  <li key={v} className="font-display text-[28px] font-semibold tracking-tight text-brand md:text-4xl">
-                    <MaskWords text={v} delay={i * 140} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Contact: the one dark block on the page, it opens out as you reach it */}
       <div data-reveal className="rv-open bg-night">
         <Section id="contact" className="on-dark pb-10 text-white md:pb-12">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
@@ -236,8 +243,14 @@ const AboutContact: React.FC = () => {
           </div>
         </Section>
       </div>
-    </>
   );
 };
+
+const AboutContact: React.FC = () => (
+  <>
+    <About />
+    <Contact />
+  </>
+);
 
 export default AboutContact;
