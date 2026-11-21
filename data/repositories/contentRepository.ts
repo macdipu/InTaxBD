@@ -32,22 +32,29 @@ export const ContentRepository = {
     },
   ],
 
-  getOrbitingServices: (): string[] => [
-    'Individual Tax Return',
-    'Business Tax Services',
-    'VAT & Compliance',
-    'Freelancer Income Tax',
-    'Audit Support',
-    'Investment & Asset Disclosure'
-  ],
+  getAdditionalServices: (): string[] => ['VAT & compliance', 'audit support'],
+
+  getTaxYear: () => ({
+    assessmentYear: '2026–27',
+    incomePeriod: '1 July 2025 – 30 June 2026',
+  }),
+
+  getContact: () => ({
+    phoneDisplay: '01717170575',
+    phoneHref: 'tel:01717170575',
+    whatsappNumber: '8801717170575',
+    email: 'intaxbd.ca@gmail.com',
+    website: 'www.intaxbd.online',
+    websiteHref: 'https://www.intaxbd.online',
+  }),
 
   getPricing: (): PricingTier[] => [
-    { id: 'p1', label: 'Below 350,000 Tk', price: '1,500 Tk' },
-    { id: 'p2', label: 'Up to 10 lacs tk', price: '3,000 Tk' },
-    { id: 'p3', label: '10–25 lacs tk', price: '5,000 Tk' },
-    { id: 'p4', label: '25–40 lacs tk', price: '8,000 Tk' },
-    { id: 'p5', label: '40–60 lacs tk', price: '12,000 Tk' },
-    { id: 'p6', label: '60 lacs–1 crore tk', price: '20,000 Tk' },
+    { id: 'p1', label: 'Below 3,50,000 Tk', price: '1,500 Tk' },
+    { id: 'p2', label: 'Up to 10 lacs Tk', price: '3,000 Tk' },
+    { id: 'p3', label: '10–25 lacs Tk', price: '5,000 Tk' },
+    { id: 'p4', label: '25–40 lacs Tk', price: '8,000 Tk' },
+    { id: 'p5', label: '40–60 lacs Tk', price: '12,000 Tk' },
+    { id: 'p6', label: '60 lacs–1 crore Tk', price: '20,000 Tk' },
     { id: 'p7', label: 'More than 1 crore Tk', price: '25,000 Tk' },
   ],
 

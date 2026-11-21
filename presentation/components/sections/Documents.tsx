@@ -1,43 +1,73 @@
-import React from 'react';
-import { Download, FileText } from 'lucide-react';
-import { Section, SectionTitle, GlassCard, Button } from '../ui/GlassComponents';
+import React, { useState } from 'react';
+import { Printer } from 'lucide-react';
+import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 
 const Documents: React.FC = () => {
   const docs = ContentRepository.getDocuments();
+  const year = ContentRepository.getTaxYear();
+  const [ready, setReady] = useState<Set<string>>(new Set());
+
+  const total = docs.reduce((n, d) => n + d.items.length, 0);
+
+  const toggle = (key: string) =>
+    setReady((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
 
   return (
-    <Section id="documents" className="bg-gradient-to-b from-brand-primary to-brand-dark">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-         <div>
-           <SectionTitle title="Documents Required" />
-           <div className="glass-panel inline-block px-4 py-2 rounded-lg border-brand-secondary/30">
-             <span className="text-gray-400 text-sm mr-2">Income Period:</span>
-             <span className="text-white font-mono">1 July 2024 – 30 June 2025</span>
-           </div>
-         </div>
-         <Button variant="outline" className="mt-4 md:mt-0">
-           <Download className="w-4 h-4" />
-           Download Checklist (PDF)
-         </Button>
+    <Section id="documents">
+      <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+        <SectionHeading
+          title="Documents to gather"
+          intro={`Tick each one as you find it. We need papers covering your income period, ${year.incomePeriod}.`}
+        />
+        <div className="no-print flex shrink-0 flex-col gap-3 md:items-end">
+          <p className="text-sm font-medium text-muted" aria-live="polite">
+            {ready.size} of {total} ready
+          </p>
+          <Button variant="outline" onClick={() => window.print()}>
+            <Printer className="h-4 w-4" aria-hidden="true" />
+            Print checklist
+          </Button>
+        </div>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-14 grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
         {docs.map((doc) => (
-          <GlassCard key={doc.id} className="hover:border-brand-secondary/30">
-            <h4 className="text-lg font-bold text-brand-secondary mb-4 flex items-center gap-2">
-              <FileText className="w-5 h-5" />
+          <fieldset key={doc.id} className="border-t border-ink pt-4">
+            <legend className="sr-only">{doc.category}</legend>
+            <h3 className="font-display text-xl font-semibold tracking-tight" aria-hidden="true">
               {doc.category}
-            </h4>
-            <ul className="space-y-2">
-              {doc.items.map((item, idx) => (
-                <li key={idx} className="flex items-center gap-2 text-gray-300 text-sm">
-                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
-                  {item}
-                </li>
-              ))}
+            </h3>
+            <ul className="mt-4 space-y-1">
+              {doc.items.map((item, idx) => {
+                const key = `${doc.id}-${idx}`;
+                const checked = ready.has(key);
+                return (
+                  <li key={key}>
+                    <label className="flex cursor-pointer items-start gap-3 rounded-md py-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggle(key)}
+                        className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-[#3F6B0C]"
+                      />
+                      <span
+                        className={`text-[17px] leading-snug ${
+                          checked ? 'text-muted line-through decoration-1' : 'text-ink'
+                        }`}
+                      >
+                        {item}
+                      </span>
+                    </label>
+                  </li>
+                );
+              })}
             </ul>
-          </GlassCard>
+          </fieldset>
         ))}
       </div>
     </Section>

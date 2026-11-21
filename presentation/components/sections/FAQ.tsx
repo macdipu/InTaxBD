@@ -1,46 +1,57 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Section, SectionTitle } from '../ui/GlassComponents';
+import { Plus } from 'lucide-react';
+import { Section, SectionHeading } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 
 const FAQ: React.FC = () => {
   const faqs = ContentRepository.getFaq();
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const toggle = (id: string) => setOpenId(openId === id ? null : id);
-
   return (
-    <Section id="faq">
-      <SectionTitle title="Frequently Asked Questions" center />
-      
-      <div className="max-w-3xl mx-auto space-y-4">
-        {faqs.map((faq) => {
-          const isOpen = openId === faq.id;
-          return (
-            <div 
-              key={faq.id} 
-              className={`glass-panel rounded-xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-brand-secondary/50 bg-white/5' : ''}`}
-            >
-              <button 
-                onClick={() => toggle(faq.id)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none"
-              >
-                <span className={`font-medium ${isOpen ? 'text-brand-secondary' : 'text-white'}`}>
-                  {faq.question}
-                </span>
-                {isOpen ? <ChevronUp className="w-5 h-5 text-brand-secondary" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
-              </button>
-              
-              <div 
-                className={`px-6 text-gray-300 text-sm transition-all duration-300 ease-in-out ${
-                  isOpen ? 'max-h-48 py-4 opacity-100 border-t border-white/5' : 'max-h-0 py-0 opacity-0'
-                }`}
-              >
-                {faq.answer}
+    <Section id="faq" className="border-t border-rule bg-surface">
+      <div className="grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <SectionHeading title="Questions people ask" intro="Can't find yours? Message us on WhatsApp." />
+        </div>
+
+        <div className="lg:col-span-8">
+          {faqs.map((faq) => {
+            const isOpen = openId === faq.id;
+            return (
+              <div key={faq.id} className="border-b border-rule first:border-t first:border-t-ink">
+                <h3>
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : faq.id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-${faq.id}`}
+                    className="flex w-full items-center justify-between gap-6 py-5 text-left"
+                  >
+                    <span className="font-display text-xl font-semibold leading-snug tracking-tight">
+                      {faq.question}
+                    </span>
+                    <Plus
+                      className={`h-5 w-5 shrink-0 transition-transform duration-200 motion-reduce:transition-none ${
+                        isOpen ? 'rotate-45' : ''
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                </h3>
+                <div
+                  id={`faq-${faq.id}`}
+                  role="region"
+                  className={`grid transition-[grid-template-rows] duration-200 motion-reduce:transition-none ${
+                    isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="max-w-2xl pb-6 text-[17px] leading-relaxed text-muted">{faq.answer}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </Section>
   );

@@ -1,12 +1,11 @@
 import React from 'react';
 import Home from '../presentation/pages/Home';
 
-// In a larger app, this would handle routing via React Router or HashRouter.
-// Since this is a single page landing site with hash navigation, we render Home directly.
+// Single page landing site with hash navigation, so Home renders directly.
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen text-brand-light font-sans selection:bg-brand-secondary selection:text-white">
+    <div className="min-h-screen bg-paper font-sans text-ink selection:bg-leaf selection:text-ink">
       <Home />
     </div>
   );

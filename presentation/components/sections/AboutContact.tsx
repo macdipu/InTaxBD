@@ -1,107 +1,163 @@
-import React from 'react';
-import { Phone, Mail, Globe, MapPin, Send } from 'lucide-react';
-import { Section, GlassCard, Button } from '../ui/GlassComponents';
+import React, { useState } from 'react';
+import { Phone, Mail, Globe, MessageCircle } from 'lucide-react';
+import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
+
+const fieldClass =
+  'mt-2 w-full rounded-md border border-white/25 bg-white/5 px-4 py-3 text-[16px] text-white placeholder:text-white/40 focus:border-leaf';
 
 const AboutContact: React.FC = () => {
   const leader = ContentRepository.getLeadership();
+  const contact = ContentRepository.getContact();
+  const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
+
+  const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm({ ...form, [key]: e.target.value });
+
+  // The form hands the message to WhatsApp, where the team replies.
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = [
+      `Hello InTaxBD, I'm ${form.name}.`,
+      form.message,
+      `Phone: ${form.phone}`,
+      form.email && `Email: ${form.email}`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+    window.open(`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+  };
+
+  const initials = leader.name
+    .replace('MD.', '')
+    .trim()
+    .split(' ')
+    .map((p) => p[0])
+    .join('');
 
   return (
-    <Section id="about" className="relative pb-0">
-      <div className="grid lg:grid-cols-2 gap-16 mb-20">
-        {/* About & Leadership */}
-        <div>
-           <h2 className="text-3xl font-bold text-white mb-6">About InTaxBD</h2>
-           <p className="text-gray-300 mb-6 leading-relaxed">
-             InTaxBD is a leading tax consultancy firm specializing in income tax filing and advisory services 
-             for individuals and businesses across Bangladesh.
-           </p>
-           
-           <div className="grid grid-cols-2 gap-6 mb-8">
-             <div>
-               <h4 className="text-brand-secondary font-bold mb-1">Mission</h4>
-               <p className="text-xs text-gray-400">To simplify tax compliance and provide expert guidance to every taxpayer in Bangladesh.</p>
-             </div>
-             <div>
-               <h4 className="text-brand-secondary font-bold mb-1">Values</h4>
-               <p className="text-xs text-gray-400">Integrity, transparency, confidentiality, excellence.</p>
-             </div>
-           </div>
+    <>
+      {/* About */}
+      <Section id="about">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionHeading
+              title="Tax advisors for every taxpayer in Bangladesh"
+              intro="InTaxBD is a tax consultancy for income tax filing and advisory, serving individuals and businesses across the country."
+            />
+          </div>
 
-           <GlassCard className="flex items-center gap-4 border-l-4 border-l-brand-secondary">
-              <div className="w-16 h-16 bg-gray-700 rounded-full overflow-hidden flex-shrink-0">
-                 {/* Placeholder for Leader Image */}
-                 <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-xs text-gray-400">IMG</div>
+          <div className="lg:col-span-7">
+            <div className="grid gap-8 sm:grid-cols-2">
+              <div className="border-t border-ink pt-4">
+                <h3 className="font-display text-xl font-semibold tracking-tight">Mission</h3>
+                <p className="mt-2 text-[16px] leading-relaxed text-muted">
+                  To simplify tax compliance and give every taxpayer in Bangladesh expert guidance.
+                </p>
+              </div>
+              <div className="border-t border-ink pt-4">
+                <h3 className="font-display text-xl font-semibold tracking-tight">Values</h3>
+                <p className="mt-2 text-[16px] leading-relaxed text-muted">
+                  Integrity, transparency, confidentiality, excellence.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-10 flex items-center gap-5 border-t border-rule pt-8">
+              <div
+                className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand font-display text-xl font-semibold text-white"
+                aria-hidden="true"
+              >
+                {initials}
               </div>
               <div>
-                <h3 className="font-bold text-white text-lg">{leader.name}</h3>
-                <p className="text-brand-secondary text-sm font-medium">{leader.role}</p>
-                <div className="text-xs text-gray-400 mt-1">
-                  {leader.qualifications.map((q, i) => (
-                    <span key={i} className="block">{q}</span>
+                <h3 className="font-display text-xl font-semibold tracking-tight">{leader.name}</h3>
+                <p className="text-[15px] font-medium text-brand">{leader.role}</p>
+                <ul className="mt-1 text-sm text-muted">
+                  {leader.qualifications.map((q) => (
+                    <li key={q}>{q}</li>
                   ))}
-                </div>
+                </ul>
               </div>
-           </GlassCard>
-        </div>
-
-        {/* Contact Form & Details */}
-        <div id="contact">
-          <GlassCard className="h-full">
-            <h3 className="text-2xl font-bold text-white mb-6">Get in Touch</h3>
-            
-            <form className="space-y-4 mb-8">
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Name" className="glass-input w-full p-3 rounded-lg text-sm" />
-                <input type="text" placeholder="Phone" className="glass-input w-full p-3 rounded-lg text-sm" />
-              </div>
-              <input type="email" placeholder="Email" className="glass-input w-full p-3 rounded-lg text-sm" />
-              <textarea placeholder="Message" rows={4} className="glass-input w-full p-3 rounded-lg text-sm resize-none"></textarea>
-              <Button variant="primary" fullWidth>
-                Send Message <Send className="w-4 h-4" />
-              </Button>
-            </form>
-
-            <div className="space-y-4 pt-6 border-t border-white/10">
-              <a href="tel:01717170575" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
-                <div className="w-8 h-8 rounded-full bg-brand-secondary/20 flex items-center justify-center text-brand-secondary">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <span>01717170575 (Phone & WhatsApp)</span>
-              </a>
-              <a href="mailto:intaxbd.ca@gmail.com" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
-                <div className="w-8 h-8 rounded-full bg-brand-secondary/20 flex items-center justify-center text-brand-secondary">
-                  <Mail className="w-4 h-4" />
-                </div>
-                <span>intaxbd.ca@gmail.com</span>
-              </a>
-              <a href="https://www.intaxbd.online" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
-                <div className="w-8 h-8 rounded-full bg-brand-secondary/20 flex items-center justify-center text-brand-secondary">
-                  <Globe className="w-4 h-4" />
-                </div>
-                <span>www.intaxbd.online</span>
-              </a>
             </div>
-          </GlassCard>
+          </div>
         </div>
-      </div>
+      </Section>
 
-      {/* Footer Copyright */}
-      <div className="border-t border-white/10 py-8 text-center text-sm text-gray-500">
-        <p>&copy; {new Date().getFullYear()} InTaxBD. All rights reserved.</p>
-        <p className="mt-2 text-xs">Certified Tax Professionals | Dhaka, Bangladesh</p>
-      </div>
+      {/* Contact: the one dark block on the page */}
+      <Section id="contact" className="on-dark bg-night pb-32 text-white lg:pb-28">
+        <div className="grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionHeading
+              onDark
+              title="Tell us what you need to file"
+              intro="Send a message and we reply on WhatsApp. Or call, if you would rather talk it through."
+            />
 
-      {/* Sticky Mobile Actions */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-brand-dark/90 backdrop-blur-lg border-t border-white/10 lg:hidden z-50 flex gap-4">
-        <Button variant="secondary" fullWidth onClick={() => window.location.href='tel:01717170575'}>
-          <Phone className="w-4 h-4" /> Call
-        </Button>
-        <Button variant="primary" fullWidth onClick={() => window.location.href='https://wa.me/8801717170575'}>
-           WhatsApp
-        </Button>
-      </div>
-    </Section>
+            <ul className="mt-10 space-y-5 text-[17px]">
+              <li>
+                <a href={contact.phoneHref} className="flex items-center gap-4 hover:text-leaf">
+                  <Phone className="h-5 w-5 text-leaf" aria-hidden="true" />
+                  <span>
+                    {contact.phoneDisplay}
+                    <span className="block text-sm text-white/60">Phone and WhatsApp</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contact.email}`} className="flex items-center gap-4 hover:text-leaf">
+                  <Mail className="h-5 w-5 text-leaf" aria-hidden="true" />
+                  {contact.email}
+                </a>
+              </li>
+              <li>
+                <a href={contact.websiteHref} className="flex items-center gap-4 hover:text-leaf">
+                  <Globe className="h-5 w-5 text-leaf" aria-hidden="true" />
+                  {contact.website}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <form onSubmit={onSubmit} className="space-y-5 lg:col-span-7">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className="block text-sm font-medium text-white/80">
+                Name
+                <input required type="text" autoComplete="name" value={form.name} onChange={update('name')} className={fieldClass} />
+              </label>
+              <label className="block text-sm font-medium text-white/80">
+                Phone
+                <input required type="tel" autoComplete="tel" value={form.phone} onChange={update('phone')} className={fieldClass} />
+              </label>
+            </div>
+            <label className="block text-sm font-medium text-white/80">
+              Email (optional)
+              <input type="email" autoComplete="email" value={form.email} onChange={update('email')} className={fieldClass} />
+            </label>
+            <label className="block text-sm font-medium text-white/80">
+              How can we help?
+              <textarea
+                required
+                rows={4}
+                value={form.message}
+                onChange={update('message')}
+                placeholder="For example: I'm a freelancer with foreign income and need to file for 2026-27."
+                className={`${fieldClass} resize-none`}
+              />
+            </label>
+            <Button type="submit" variant="accent">
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
+              Send on WhatsApp
+            </Button>
+          </form>
+        </div>
+
+        <div className="mt-20 flex flex-col gap-2 border-t border-white/15 pt-8 text-sm text-white/60 sm:flex-row sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} InTaxBD. All rights reserved.</p>
+          <p>Certified tax professionals, Dhaka, Bangladesh</p>
+        </div>
+      </Section>
+    </>
   );
 };
 

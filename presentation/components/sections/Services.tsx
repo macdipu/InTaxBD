@@ -1,50 +1,48 @@
 import React from 'react';
-import { User, Building, Briefcase, Check } from 'lucide-react';
-import { Section, SectionTitle, GlassCard, Button } from '../ui/GlassComponents';
+import { Check } from 'lucide-react';
+import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
-
-const iconMap: Record<string, React.ReactNode> = {
-  User: <User className="w-8 h-8 text-brand-secondary" />,
-  Building: <Building className="w-8 h-8 text-brand-secondary" />,
-  Briefcase: <Briefcase className="w-8 h-8 text-brand-secondary" />,
-};
 
 const Services: React.FC = () => {
   const services = ContentRepository.getServices();
+  const additional = ContentRepository.getAdditionalServices();
 
   return (
-    <Section id="services" className="bg-brand-primary/30">
-      <SectionTitle title="Our Tax Services" center />
-      
-      <div className="grid md:grid-cols-3 gap-8">
-        {services.map((service) => (
-          <GlassCard key={service.id} className="flex flex-col h-full hover:border-brand-secondary/50">
-            <div className="w-16 h-16 rounded-2xl bg-brand-secondary/10 flex items-center justify-center mb-6 border border-brand-secondary/20">
-              {iconMap[service.iconName]}
-            </div>
-            
-            <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-            
-            <ul className="space-y-3 flex-grow mb-8">
-              {service.description.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-gray-300 text-sm">
-                  <Check className="w-4 h-4 text-brand-success mt-0.5 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <div className="mt-auto">
-               <span className="text-xs text-brand-secondary/80 font-medium block mb-2">Starting from 1,500 Tk</span>
-            </div>
-          </GlassCard>
-        ))}
-      </div>
+    <Section id="services" className="border-t border-rule bg-surface">
+      <div className="grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <SectionHeading
+            title="Who we file for"
+            intro="Pick the line that matches you. Fees start at 1,500 Tk and depend on your income or assets."
+          />
+          <p className="mt-6 max-w-md text-[15px] text-muted">
+            We also handle {additional.join(' and ')}.
+          </p>
+          <Button variant="primary" href="#contact" className="mt-8">
+            Get a free consultation
+          </Button>
+        </div>
 
-      <div className="mt-12 text-center">
-        <Button variant="primary" className="mx-auto">
-          Get Free Consultation
-        </Button>
+        <div className="lg:col-span-8">
+          {services.map((service) => (
+            <div
+              key={service.id}
+              className="grid gap-4 border-t border-ink py-8 md:grid-cols-12 md:gap-8"
+            >
+              <h3 className="font-display text-2xl font-semibold leading-tight tracking-tight md:col-span-5">
+                {service.title}
+              </h3>
+              <ul className="space-y-3 md:col-span-7">
+                {service.description.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-[17px] text-ink">
+                    <Check className="mt-1 h-4 w-4 shrink-0 text-leaf-deep" strokeWidth={3} aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
     </Section>
   );

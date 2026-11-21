@@ -1,129 +1,120 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth scroll-pt-24">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>InTaxBD - Expert Tax Advisory Services</title>
-    <meta name="description" content="Simplify your tax compliance with professional guidance in Bangladesh. Individual and Business Tax Services." />
-    
-    <!-- Fonts: Inter for professional UI -->
+    <title>InTaxBD - Income Tax Return Filing in Bangladesh</title>
+    <meta name="description" content="File your Bangladesh income tax return for assessment year 2026-27. Clear fees, 48-hour preparation, and support for individuals, freelancers, NRBs and businesses." />
+    <meta name="theme-color" content="#F3F5F8" />
+
+    <!-- Fonts: Bricolage Grotesque (display) + Public Sans (text, tabular figures for money) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Centralized Theme Configuration -->
+
+    <!-- Theme tokens: taken from the InTaxBD logo (navy, check-mark green, charcoal) -->
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              brand: {
-                primary: '#0f172a',   /* Trust Blue (Slate 900) */
-                secondary: '#0ea5e9', /* Cyan Accent (Sky 500) */
-                success: '#10b981',   /* Compliance Green */
-                dark: '#020617',      /* Deep Background */
-                light: '#f8fafc',     /* Neutral Surface */
-              },
-              glass: {
-                border: 'rgba(255, 255, 255, 0.1)',
-                surface: 'rgba(255, 255, 255, 0.05)',
-                highlight: 'rgba(255, 255, 255, 0.2)',
-              }
+              paper: '#F3F5F8',
+              surface: '#FFFFFF',
+              ink: '#0E1B33',
+              muted: '#4B5870',
+              rule: '#D6DCE5',
+              brand: { DEFAULT: '#15409A', deep: '#0B2A6B' },
+              leaf: { DEFAULT: '#7CB82F', deep: '#3F6B0C' },
+              night: '#0A1630',
             },
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              display: ['"Bricolage Grotesque"', 'sans-serif'],
+              sans: ['"Public Sans"', 'sans-serif'],
             },
-            animation: {
-              'float': 'float 6s ease-in-out infinite',
-              'spin-slow': 'spin 20s linear infinite',
-              'reverse-spin': 'reverse-spin 20s linear infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
-              },
-              'reverse-spin': {
-                from: { transform: 'rotate(360deg)' },
-                to: { transform: 'rotate(0deg)' },
-              }
-            }
-          }
-        }
+          },
+        },
       }
     </script>
 
     <style>
+      html { scroll-padding-top: 6rem; }
       body {
-        background-color: #0f172a; /* Fallback */
-        background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
-        color: #f8fafc;
+        background: #F3F5F8;
+        color: #0E1B33;
         overflow-x: hidden;
+        font-feature-settings: 'tnum' 1;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* Glassmorphism Utilities */
-      .glass-panel {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      }
-
-      .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      .glass-card:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(56, 189, 248, 0.3);
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px 0 rgba(14, 165, 233, 0.15);
-      }
-
-      .glass-input {
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-      }
-      .glass-input:focus {
-        border-color: #0ea5e9;
-        outline: none;
-      }
-
-      /* Orbit Animation Helper */
-      .orbit-container {
-        position: relative;
-        animation: spin 30s linear infinite;
-      }
-      
-      .orbit-item {
-        position: absolute;
-        animation: reverse-spin 30s linear infinite; /* Counter-rotate to keep content upright */
-      }
-      
-      /* Hide scrollbar for clean look */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f172a; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #334155; 
+      /* Visible keyboard focus everywhere */
+      :focus-visible {
+        outline: 3px solid #15409A;
+        outline-offset: 3px;
         border-radius: 4px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569; 
+      .on-dark :focus-visible { outline-color: #7CB82F; }
+
+      /* Fee slider: a green check-mark coloured thumb on a ruled track */
+      .fee-range {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 36px;
+        background: transparent;
+        cursor: pointer;
+      }
+      .fee-range::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 2px;
+        background: #D6DCE5;
+      }
+      .fee-range::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: #D6DCE5;
+      }
+      .fee-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 28px;
+        width: 28px;
+        margin-top: -12px;
+        border-radius: 50%;
+        background: #7CB82F;
+        border: 4px solid #FFFFFF;
+        box-shadow: 0 0 0 2px #0E1B33;
+      }
+      .fee-range::-moz-range-thumb {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #7CB82F;
+        border: 4px solid #FFFFFF;
+        box-shadow: 0 0 0 2px #0E1B33;
+      }
+
+      /* The one page-load moment: hero content rises in, staggered */
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+      .rise-1 { animation-delay: 0.08s; }
+      .rise-2 { animation-delay: 0.18s; }
+      .rise-3 { animation-delay: 0.3s; }
+      @media (prefers-reduced-motion: reduce) {
+        .rise { animation: none; }
+        html { scroll-behavior: auto !important; }
+      }
+
+      /* Print only the document checklist */
+      @media print {
+        body * { visibility: hidden; }
+        #documents, #documents * { visibility: visible; }
+        #documents { position: absolute; left: 0; top: 0; width: 100%; }
+        .no-print { display: none !important; }
       }
     </style>
   <script type="importmap">
@@ -136,7 +127,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
