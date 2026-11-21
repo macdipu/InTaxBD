@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        // Allow Cloudflare quick-tunnel URLs (npm run share) so clients can watch live changes.
+        allowedHosts: ['.trycloudflare.com'],
       },
       plugins: [react()],
       define: {

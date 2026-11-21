@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { MaskWords } from './Motion';
 
 // --- Button (renders a link when href is given) ---
 type Variant = 'primary' | 'accent' | 'outline' | 'light';
@@ -9,8 +10,10 @@ interface ButtonProps {
   href?: string;
   fullWidth?: boolean;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   type?: 'button' | 'submit';
+  target?: string;
+  disabled?: boolean;
 }
 
 const variants: Record<Variant, string> = {
@@ -28,20 +31,29 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   onClick,
   type = 'button',
+  target,
+  disabled,
 }) => {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-[15px] font-semibold transition-colors ${
+  const classes = `inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md px-5 py-3 text-[15px] font-semibold transition-[background-color,color,border-color,transform] duration-150 active:scale-[.97] motion-reduce:active:scale-100 ${
     fullWidth ? 'w-full' : ''
   } ${variants[variant]} ${className}`;
 
   if (href) {
+    const external = href.startsWith('http');
     return (
-      <a href={href} className={classes}>
+      <a
+        href={href}
+        onClick={onClick}
+        className={classes}
+        target={target ?? (external ? '_blank' : undefined)}
+        rel={external ? 'noopener' : undefined}
+      >
         {children}
       </a>
     );
   }
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button type={type} onClick={onClick} className={classes} disabled={disabled}>
       {children}
     </button>
   );
@@ -52,28 +64,34 @@ export const Section: React.FC<{
   children: ReactNode;
   id?: string;
   className?: string;
-}> = ({ children, id, className = '' }) => (
-  <section id={id} className={`px-5 py-20 md:px-10 md:py-28 ${className}`}>
-    <div className="mx-auto max-w-6xl">{children}</div>
+  innerClassName?: string;
+}> = ({ children, id, className = '', innerClassName = '' }) => (
+  <section id={id} className={`px-5 py-16 sm:px-8 md:px-10 md:py-28 ${className}`}>
+    <div className={`mx-auto max-w-6xl ${innerClassName}`}>{children}</div>
   </section>
 );
 
-// --- Section heading: left aligned, one job ---
+// --- Section heading: words rise out of a mask, intro fades in after ---
 export const SectionHeading: React.FC<{
   title: string;
   intro?: string;
   onDark?: boolean;
 }> = ({ title, intro, onDark = false }) => (
-  <div>
+  <div data-reveal>
     <h2
-      className={`font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl ${
+      className={`font-display text-[32px] font-semibold leading-[1.06] tracking-tight sm:text-4xl md:text-5xl ${
         onDark ? 'text-white' : 'text-ink'
       }`}
     >
-      {title}
+      <MaskWords text={title} />
     </h2>
     {intro && (
-      <p className={`mt-5 max-w-md text-[17px] leading-relaxed ${onDark ? 'text-white/70' : 'text-muted'}`}>
+      <p
+        className={`rv-fade mt-4 max-w-md text-[16px] leading-relaxed md:mt-5 md:text-[17px] ${
+          onDark ? 'text-white/70' : 'text-muted'
+        }`}
+        style={{ '--d': '250ms' } as React.CSSProperties}
+      >
         {intro}
       </p>
     )}

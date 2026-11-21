@@ -34,6 +34,7 @@ const hideBootLoader = () => {
     done = true;
     html.classList.add('boot-done');
     html.classList.remove('is-booting');
+    window.dispatchEvent(new Event('intaxbd:ready'));
     window.setTimeout(() => document.getElementById('boot')?.remove(), 600);
   };
   const afterMin = () => window.setTimeout(finish, Math.max(0, minMs - performance.now()));

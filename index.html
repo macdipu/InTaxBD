@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth is-booting">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>InTaxBD - Income Tax Return Filing in Bangladesh</title>
     <meta name="description" content="File your Bangladesh income tax return for assessment year 2026-27. Clear fees, 48-hour preparation, and support for individuals, freelancers, NRBs and businesses." />
     <meta name="theme-color" content="#F3F5F8" />
@@ -41,10 +41,10 @@
 
     <style>
       html { scroll-padding-top: 6rem; }
+      html, body { overflow-x: clip; }
       body {
         background: #F3F5F8;
         color: #0E1B33;
-        overflow-x: hidden;
         font-feature-settings: 'tnum' 1;
         -webkit-font-smoothing: antialiased;
       }
@@ -76,23 +76,32 @@
         border-radius: 2px;
         background: #D6DCE5;
       }
+      .fee-range { height: 44px; touch-action: pan-y; }
       .fee-range::-webkit-slider-thumb {
         -webkit-appearance: none;
-        height: 28px;
-        width: 28px;
-        margin-top: -12px;
+        height: 32px;
+        width: 32px;
+        margin-top: -14px;
         border-radius: 50%;
-        background: #7CB82F;
-        border: 4px solid #FFFFFF;
+        background: #7CB82F url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230E1B33' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E") center / 14px no-repeat;
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 0 0 2px #0E1B33;
+        transition: transform .18s var(--ease-stamp);
+      }
+      .fee-range:active::-webkit-slider-thumb { transform: scale(1.15); }
+      .fee-range::-moz-range-thumb {
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        background: #7CB82F url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230E1B33' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E") center / 14px no-repeat;
+        border: 3px solid #FFFFFF;
         box-shadow: 0 0 0 2px #0E1B33;
       }
-      .fee-range::-moz-range-thumb {
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        background: #7CB82F;
-        border: 4px solid #FFFFFF;
-        box-shadow: 0 0 0 2px #0E1B33;
+      .fee-range::-webkit-slider-runnable-track {
+        background: linear-gradient(#0E1B33, #0E1B33) 0 / var(--fill, 0%) 100% no-repeat, #D6DCE5;
+      }
+      .fee-range::-moz-range-track {
+        background: linear-gradient(#0E1B33, #0E1B33) 0 / var(--fill, 0%) 100% no-repeat, #D6DCE5;
       }
 
       /* The one page-load moment: hero content rises in, staggered */
@@ -107,6 +116,219 @@
       @media (prefers-reduced-motion: reduce) {
         .rise { animation: none; }
         html { scroll-behavior: auto !important; }
+      }
+
+      /* ================= Motion system =================
+         Verbs from the world of filing a return:
+         write (words rise out of a mask), rule (ledger lines draw),
+         tick (check marks draw), fill (numbers roll), stamp (seal lands).
+         Elements with [data-reveal] get [data-in] once scrolled into view
+         (see useRevealObserver); their children animate from that. */
+
+      /* write: per-word mask */
+      .mw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+      .mw > span {
+        display: inline-block;
+        transform: translateY(108%);
+        transition: transform .75s var(--ease-out) calc(var(--i, 0) * 45ms + var(--d, 0ms));
+      }
+      [data-in] .mw > span { transform: none; }
+
+      /* soft fade for supporting copy */
+      .rv-fade {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity .6s var(--ease-out) var(--d, 0ms), transform .6s var(--ease-out) var(--d, 0ms);
+      }
+      [data-in] .rv-fade, [data-in].rv-fade { opacity: 1; transform: none; }
+
+      /* rule: ledger lines draw left to right */
+      .rv-rule {
+        display: block;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .9s var(--ease-out) var(--d, 0ms);
+      }
+      [data-in] .rv-rule, [data-in].rv-rule { transform: scaleX(1); }
+
+      /* rule (vertical): quote bars */
+      .rv-bar { transform: scaleY(0); transform-origin: top; transition: transform .8s var(--ease-out) var(--d, 0ms); }
+      [data-in] .rv-bar { transform: scaleY(1); }
+
+      /* dotted leader in the fee ledger */
+      .leader {
+        flex: 1;
+        min-width: 12px;
+        height: 2px;
+        margin-bottom: .32em;
+        background-image: radial-gradient(circle, rgba(14,27,51,.35) 1px, transparent 1.2px);
+        background-size: 6px 2px;
+        background-repeat: repeat-x;
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path .7s var(--ease-out) var(--d, 0ms);
+      }
+      [data-in] .leader { clip-path: inset(0 0 0 0); }
+
+      /* tick: an SVG check (pathLength=1) draws itself */
+      .tick path {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        stroke-opacity: 0; /* hides the round-cap dot before drawing */
+      }
+      [data-in] .tick path {
+        stroke-dashoffset: 0;
+        stroke-opacity: 1;
+        transition: stroke-dashoffset .45s var(--ease-in-out) var(--d, 0ms), stroke-opacity 0s linear var(--d, 0ms);
+      }
+      /* toggle-driven tick (checkboxes, steps): only .on draws it */
+      .tick-t path {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        stroke-opacity: 0;
+        transition: stroke-dashoffset .3s var(--ease-in-out), stroke-opacity 0s linear .3s;
+      }
+      .tick-t.on path {
+        stroke-dashoffset: 0;
+        stroke-opacity: 1;
+        transition: stroke-dashoffset .35s var(--ease-in-out) var(--d, 0ms), stroke-opacity 0s linear var(--d, 0ms);
+      }
+
+      /* photo prints upward */
+      .rv-print { clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--ease-out) var(--d, 0ms); }
+      .rv-print img { transform: scale(1.08); transition: transform 1.4s var(--ease-out) var(--d, 0ms); }
+      [data-in] .rv-print { clip-path: inset(0 0 0 0); }
+      [data-in] .rv-print img { transform: none; }
+
+      /* night band opens out when reached */
+      .rv-open {
+        clip-path: inset(3% 4% 0 4% round 28px);
+        transition: clip-path 1s var(--ease-out);
+      }
+      .rv-open[data-in] { clip-path: inset(0 0 0 0 round 0); }
+
+      /* fill: odometer digits */
+      .odo { display: inline-flex; align-items: flex-start; white-space: nowrap; }
+      .odo-col { display: inline-block; height: 1.1em; overflow: hidden; }
+      .odo-strip { display: flex; flex-direction: column; transition: transform .7s var(--ease-out); }
+      .odo-strip > span { display: block; height: 1.1em; line-height: 1.1em; text-align: center; }
+      .odo-char { display: inline-block; line-height: 1.1em; }
+
+      /* stamp: a rubber seal lands with overshoot */
+      .stamp {
+        display: inline-flex;
+        align-items: center;
+        gap: .4em;
+        padding: .45em .85em;
+        border: 2px solid currentColor;
+        border-radius: 999px;
+        outline: 1px solid currentColor;
+        outline-offset: 2px;
+        color: #3F6B0C;
+        font: 700 13px/1 'Public Sans', sans-serif;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transform: rotate(-10deg);
+        pointer-events: none;
+      }
+      .stamp.on, .stamp.lift { visibility: visible; }
+      .stamp.on { animation: stamp-land .55s var(--ease-stamp) both; }
+      .stamp.lift { animation: none; opacity: .25; transform: rotate(-10deg) scale(1.12); transition: opacity .2s, transform .2s; }
+      @keyframes stamp-land {
+        0%   { opacity: 0; transform: rotate(-16deg) scale(1.7); }
+        60%  { opacity: .95; transform: rotate(-9deg) scale(.94); }
+        100% { opacity: .9; transform: rotate(-10deg) scale(1); }
+      }
+      @keyframes thud { 0%,100% { transform: none; } 30% { transform: translate(1px, 2px); } 60% { transform: translate(-1px, -1px); } }
+      .thud { animation: thud .28s ease-out .3s; }
+
+      /* swap: a changed value slides in */
+      @keyframes swap-in { from { opacity: 0; transform: translateY(60%); } to { opacity: 1; transform: none; } }
+      .swap-in { display: inline-block; animation: swap-in .32s var(--ease-out) both; }
+
+      /* pop: chips and small confirmations */
+      @keyframes pop-in { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+      .pop-in { animation: pop-in .45s var(--ease-stamp) both; }
+
+      /* shake: invalid field */
+      @keyframes shake { 0%,100% { transform: none; } 20%,60% { transform: translateX(-4px); } 40%,80% { transform: translateX(4px); } }
+      .shake { animation: shake .3s ease-in-out; }
+
+      /* ping: one-off attention ring */
+      @keyframes ping { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(2.4); opacity: 0; } }
+      [data-in] .ping::after, .ping.go::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: inherit;
+        animation: ping 1.4s var(--ease-out) 2;
+      }
+
+      /* one soft ring around the mobile WhatsApp button */
+      @keyframes ring {
+        0%   { box-shadow: 0 0 0 0 rgba(124, 184, 47, .55); }
+        100% { box-shadow: 0 0 0 12px rgba(124, 184, 47, 0); }
+      }
+      .ring-pulse { animation: ring 1.3s var(--ease-out) 2; }
+
+      /* hero slip is placed on the desk */
+      .slip {
+        opacity: 0;
+        transform: translateY(28px) rotate(1.2deg);
+        transition: opacity .6s var(--ease-out) .25s, transform .9s var(--ease-out) .25s;
+      }
+      .slip[data-in] { opacity: 1; transform: none; }
+
+      /* rows that respond to hover with a nudge, not a lift */
+      @media (hover: hover) {
+        .nudge-row:hover .nudge { transform: translateX(6px); }
+        .nudge-row:hover .nudge-line { transform: scaleY(3); background: #15409A; }
+      }
+      .nudge { transition: transform .35s var(--ease-out); }
+      .nudge-line { transform-origin: top; transition: transform .35s var(--ease-out), background-color .35s; }
+
+      /* field focus: a leaf underline draws across */
+      .field-wrap { position: relative; }
+      .field-wrap::after {
+        content: '';
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 2px;
+        background: #7CB82F;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .4s var(--ease-out);
+        border-radius: 2px;
+      }
+      .field-wrap:focus-within::after { transform: scaleX(1); }
+
+      /* checklist strike draws across the label */
+      .strike { position: relative; }
+      .strike::after {
+        content: '';
+        position: absolute;
+        left: 0; right: 0; top: 55%;
+        height: 1.5px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .35s var(--ease-out);
+      }
+      .strike.on::after { transform: scaleX(1); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .mw > span, .rv-fade, .rv-rule, .rv-bar, .leader, .tick path, .rv-print, .rv-print img,
+        .rv-open, .odo-strip, .strike::after, .field-wrap::after, .tick-t path { transition: none !important; }
+        .mw > span, .rv-fade, .rv-rule, .rv-bar, .rv-print img { transform: none !important; opacity: 1 !important; }
+        .leader, .rv-print, .rv-open { clip-path: none !important; }
+        .tick path { stroke-dashoffset: 0 !important; stroke-opacity: 1 !important; }
+        .stamp.on, .swap-in, .pop-in, .shake, .thud, [data-in] .ping::after, .ping.go::after, .ring-pulse { animation: none !important; }
+        .slip { opacity: 1 !important; transform: none !important; transition: none !important; }
+        .nudge, .nudge-line { transition: none !important; }
+        .stamp.on { opacity: .9; transform: rotate(-10deg); }
       }
 
       /* ---------- Animated logo ----------

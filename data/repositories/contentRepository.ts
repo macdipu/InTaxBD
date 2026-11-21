@@ -6,10 +6,10 @@ import { ServiceItem, PricingTier, HowItWorksStep, DocRequirement, FaqItem, Stat
 
 export const ContentRepository = {
   getHeroStats: (): Stat[] => [
-    { id: '1', value: '100%', label: 'Compliance', description: 'Guaranteed tax law adherence' },
-    { id: '2', value: '500+', label: 'Clients', description: 'Trusted by professionals' },
-    { id: '3', value: 'Expert', label: 'Team', description: 'Certified tax consultants' },
-    { id: '4', value: '48h', label: 'Processing', description: 'Returns filed within 48 hours' },
+    { id: '1', value: '48h', label: 'Processing', description: 'To prepare your return once documents arrive' },
+    { id: '2', value: '500+', label: 'Clients', description: 'Individuals and businesses filed for' },
+    { id: '3', value: 'Expert', label: 'Team', description: 'Income tax lawyers and qualified accountants' },
+    { id: '4', value: '100%', label: 'Compliance', description: 'Filed in line with the Income Tax Act 2023' },
   ],
 
   getServices: (): ServiceItem[] => [
@@ -68,12 +68,12 @@ export const ContentRepository = {
   ],
 
   getProcessSteps: (): HowItWorksStep[] => [
-    { id: 's1', stepNumber: '01', title: 'Initial Contact', description: 'Phone / WhatsApp / Form' },
-    { id: 's2', stepNumber: '02', title: 'Document Submission', description: 'WhatsApp / Email' },
-    { id: 's3', stepNumber: '03', title: 'Review & Calculation', description: 'Expert analysis' },
-    { id: 's4', stepNumber: '04', title: 'Client Confirmation', description: 'Approval' },
-    { id: 's5', stepNumber: '05', title: 'Return Submission', description: 'Submit to NBR' },
-    { id: 's6', stepNumber: '06', title: 'Post-Filing Support', description: 'Year-round advice' },
+    { id: 's1', stepNumber: '01', title: 'Get in touch', description: 'Call, WhatsApp us, or send the form below.' },
+    { id: 's2', stepNumber: '02', title: 'Send your documents', description: 'Photos or PDFs on WhatsApp or email are fine.' },
+    { id: 's3', stepNumber: '03', title: 'We review and calculate', description: 'A qualified accountant prepares your return and works out the tax.' },
+    { id: 's4', stepNumber: '04', title: 'You confirm the figures', description: 'We show you the numbers. Nothing is filed until you approve.' },
+    { id: 's5', stepNumber: '05', title: 'We submit to the NBR', description: 'Your return is filed and you get the acknowledgement receipt.' },
+    { id: 's6', stepNumber: '06', title: 'Support after filing', description: 'Help with tax certificates or notices, all year.' },
   ],
 
   getDocuments: (): DocRequirement[] => [
@@ -112,32 +112,32 @@ export const ContentRepository = {
     },
     { 
       id: 'f2', 
-      question: 'Late filing consequences', 
+      question: 'What happens if I file late?',
       answer: 'Late filing can result in penalties, interest on tax payable, and inability to access certain government services requiring a tax certificate.' 
     },
     { 
       id: 'f3', 
-      question: 'Online filing security', 
+      question: 'Is it safe to send my documents online?', 
       answer: 'We use secure, encrypted channels for document transfer and ensure your data is handled with strict confidentiality.' 
     },
     { 
       id: 'f4', 
-      question: 'Freelancer & NRB support', 
+      question: 'Do you handle freelancers and NRBs?', 
       answer: 'Yes, we specialize in foreign remittance declaration for freelancers and NRBs to ensure you get legal tax exemptions.' 
     },
     { 
       id: 'f5', 
-      question: 'Data confidentiality', 
+      question: 'Who sees my financial information?', 
       answer: 'Your financial data is strictly confidential and shared only with the NBR for filing purposes.' 
     },
     { 
       id: 'f6', 
-      question: 'Processing time', 
+      question: 'How long does it take?', 
       answer: 'Typically, we prepare your return within 48 hours of receiving all necessary documents.' 
     },
     { 
       id: 'f7', 
-      question: 'Post-filing support', 
+      question: 'What do I get after filing?', 
       answer: 'We provide the acknowledgment receipt immediately and help you with tax clearance certificates or audit notices if they arise.' 
     },
   ],
