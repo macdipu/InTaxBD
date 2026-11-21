@@ -22,10 +22,13 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
       <div className="mx-auto grid max-w-6xl items-start gap-14 lg:grid-cols-12">
         {/* Left: the promise */}
         <div className="lg:col-span-7">
-          <p className="rise inline-flex items-center gap-2 rounded-full border border-rule bg-surface px-3.5 py-1.5 text-sm font-medium text-ink">
-            <span className="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
-            Returns open for assessment year {year.assessmentYear}
-          </p>
+          <div className="rise inline-flex flex-col gap-0.5 rounded-xl border border-rule bg-surface px-4 py-2.5 text-sm">
+            <p className="flex items-center gap-2 font-semibold text-ink">
+              <span className="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
+              Assessment Year: {year.assessmentYear}
+            </p>
+            <p className="pl-4 text-muted">Income Year: {year.incomeYear}</p>
+          </div>
 
           <h1 className="rise rise-1 mt-7 font-display text-[44px] font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-[76px]">
             File your income tax return in 48 hours.

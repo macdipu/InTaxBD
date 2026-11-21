@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Printer } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
+import PrintChecklist from './PrintChecklist';
 
 const Documents: React.FC = () => {
   const docs = ContentRepository.getDocuments();
@@ -22,7 +23,7 @@ const Documents: React.FC = () => {
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
           title="Documents to gather"
-          intro={`Tick each one as you find it. We need papers covering your income period, ${year.incomePeriod}.`}
+          intro={`Tick each one as you find it. For Assessment Year ${year.assessmentYear} we need papers covering the Income Year: ${year.incomeYear}.`}
         />
         <div className="no-print flex shrink-0 flex-col gap-3 md:items-end">
           <p className="text-sm font-medium text-muted" aria-live="polite">
@@ -30,10 +31,11 @@ const Documents: React.FC = () => {
           </p>
           <Button variant="outline" onClick={() => window.print()}>
             <Printer className="h-4 w-4" aria-hidden="true" />
-            Print checklist
+            Print or save as PDF
           </Button>
         </div>
       </div>
+      <PrintChecklist ready={ready} />
 
       <div className="mt-14 grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
         {docs.map((doc) => (

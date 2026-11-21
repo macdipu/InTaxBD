@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
           className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-10"
         >
           <a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="InTaxBD home">
-            <img src={logo} alt="InTaxBD" className="h-8 w-auto object-contain" />
+            <img src={logo} alt="InTaxBD" className="h-11 w-auto object-contain md:h-14" />
           </a>
 
           <div className="hidden items-center gap-8 lg:flex">

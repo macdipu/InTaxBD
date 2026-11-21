@@ -1,3 +1,4 @@
+import leaderPhoto from '@/assets/jpg/reyad-chowdhury.jpg';
 import { ServiceItem, PricingTier, HowItWorksStep, DocRequirement, FaqItem, Stat, TeamMember } from '../../domain/entities/models';
 
 // This repository acts as the single source of truth for content, 
@@ -22,22 +23,30 @@ export const ContentRepository = {
       id: 'business',
       title: 'Business Tax Services',
       iconName: 'Building',
-      description: ['Proprietorship', 'Partnership firms', 'Financial statements review'],
+      description: ['Proprietorship', 'Partnership firms', 'Company', 'Financial statements review'],
     },
     {
       id: 'special',
       title: 'Specialized Services',
       iconName: 'Briefcase',
-      description: ['Freelancer income tax', 'Investment & asset disclosure', 'Tax certificate support'],
+      description: ['Freelancer income tax', 'Investment & asset disclosure', 'Tax certificate support', 'Tax planning', 'Rebate planning'],
     },
   ],
 
-  getAdditionalServices: (): string[] => ['VAT & compliance', 'audit support'],
+  getAdditionalServices: (): string[] => ['VAT', 'regulatory compliance', 'company affairs (RJSC)', 'audit support'],
 
-  getTaxYear: () => ({
-    assessmentYear: '2026–27',
-    incomePeriod: '1 July 2025 – 30 June 2026',
-  }),
+  // Bangladesh income year runs 1 July to 30 June. Returns for an income year are
+  // filed from the following July, so the year rolls over automatically each 1 July.
+  // e.g. any date from 1 July 2026 to 30 June 2027 gives:
+  //   Income Year 01 July 2025 to 30 June 2026, Assessment Year 2026-2027
+  getTaxYear: (today: Date = new Date()) => {
+    const y = today.getFullYear();
+    const assessmentStart = today.getMonth() >= 6 ? y : y - 1; // month 6 = July
+    return {
+      assessmentYear: `${assessmentStart}-${assessmentStart + 1}`,
+      incomeYear: `01 July ${assessmentStart - 1} to 30 June ${assessmentStart}`,
+    };
+  },
 
   getContact: () => ({
     phoneDisplay: '01717170575',
@@ -137,6 +146,6 @@ export const ContentRepository = {
     name: 'MD. Reyad Chowdhury',
     role: 'CEO, InTaxBD',
     qualifications: ['CA Professional Level, ICAB', 'MBA & BBA (Finance, University of Dhaka)'],
-    imagePlaceholder: 'https://picsum.photos/200/200?grayscale',
+    photo: leaderPhoto,
   })
 };

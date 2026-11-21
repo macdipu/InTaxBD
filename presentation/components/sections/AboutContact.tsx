@@ -9,6 +9,7 @@ const fieldClass =
 const AboutContact: React.FC = () => {
   const leader = ContentRepository.getLeadership();
   const contact = ContentRepository.getContact();
+  const year = ContentRepository.getTaxYear();
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
 
   const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -28,57 +29,58 @@ const AboutContact: React.FC = () => {
     window.open(`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
   };
 
-  const initials = leader.name
-    .replace('MD.', '')
-    .trim()
-    .split(' ')
-    .map((p) => p[0])
-    .join('');
+  const expertise = ['Income tax', 'VAT', 'Regulatory compliance', 'Company affairs (RJSC)'];
+  const values = ['Integrity', 'Compliance', 'Precision'];
 
   return (
     <>
       {/* About */}
       <Section id="about">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionHeading
-              title="Tax advisors for every taxpayer in Bangladesh"
-              intro="InTaxBD is a tax consultancy for income tax filing and advisory, serving individuals and businesses across the country."
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* Leader portrait */}
+          <figure className="sm:flex sm:items-end sm:gap-8 lg:col-span-4 lg:block">
+            <img
+              src={leader.photo}
+              alt={`Portrait of ${leader.name}`}
+              width={720}
+              height={964}
+              loading="lazy"
+              className="aspect-[3/4] w-40 shrink-0 rounded-xl object-cover object-top sm:w-44 lg:w-52"
             />
-          </div>
+            <figcaption className="mt-5 sm:mt-0 lg:mt-5">
+              <p className="font-display text-2xl font-semibold tracking-tight">{leader.name}</p>
+              <p className="text-[15px] font-medium text-brand">{leader.role}</p>
+              <ul className="mt-2 space-y-0.5 text-sm text-muted">
+                {leader.qualifications.map((q) => (
+                  <li key={q}>{q}</li>
+                ))}
+              </ul>
+            </figcaption>
+          </figure>
 
-          <div className="lg:col-span-7">
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div className="border-t border-ink pt-4">
-                <h3 className="font-display text-xl font-semibold tracking-tight">Mission</h3>
-                <p className="mt-2 text-[16px] leading-relaxed text-muted">
-                  To simplify tax compliance and give every taxpayer in Bangladesh expert guidance.
-                </p>
-              </div>
-              <div className="border-t border-ink pt-4">
-                <h3 className="font-display text-xl font-semibold tracking-tight">Values</h3>
-                <p className="mt-2 text-[16px] leading-relaxed text-muted">
-                  Integrity, transparency, confidentiality, excellence.
-                </p>
-              </div>
-            </div>
+          <div className="lg:col-span-8">
+            <SectionHeading
+              title="Simplifying tax for individuals, small businesses and companies"
+              intro="Expert guidance for Tax, VAT, Regulatory Compliance and Company Affairs (RJSC), from a team of income tax lawyers and qualified accountants."
+            />
 
-            <div className="mt-10 flex items-center gap-5 border-t border-rule pt-8">
-              <div
-                className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand font-display text-xl font-semibold text-white"
-                aria-hidden="true"
-              >
-                {initials}
-              </div>
-              <div>
-                <h3 className="font-display text-xl font-semibold tracking-tight">{leader.name}</h3>
-                <p className="text-[15px] font-medium text-brand">{leader.role}</p>
-                <ul className="mt-1 text-sm text-muted">
-                  {leader.qualifications.map((q) => (
-                    <li key={q}>{q}</li>
-                  ))}
-                </ul>
-              </div>
+            <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+              {expertise.map((item) => (
+                <li key={item} className="border-t border-ink pt-3 font-display text-xl font-semibold tracking-tight">
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-12 rounded-xl bg-surface p-6 md:p-8">
+              <h3 className="text-sm font-medium text-muted">What we stand for</h3>
+              <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
+                {values.map((v) => (
+                  <li key={v} className="font-display text-3xl font-semibold tracking-tight text-brand md:text-4xl">
+                    {v}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -141,7 +143,7 @@ const AboutContact: React.FC = () => {
                 rows={4}
                 value={form.message}
                 onChange={update('message')}
-                placeholder="For example: I'm a freelancer with foreign income and need to file for 2026-27."
+                placeholder={`For example: I'm a freelancer with foreign income and need to file for ${year.assessmentYear}.`}
                 className={`${fieldClass} resize-none`}
               />
             </label>

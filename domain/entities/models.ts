@@ -43,5 +43,5 @@ export interface TeamMember {
   name: string;
   role: string;
   qualifications: string[];
-  imagePlaceholder: string;
+  photo: string;
 }

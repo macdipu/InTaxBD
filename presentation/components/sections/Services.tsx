@@ -15,8 +15,11 @@ const Services: React.FC = () => {
             title="Who we file for"
             intro="Pick the line that matches you. Fees start at 1,500 Tk and depend on your income or assets."
           />
+          <p className="mt-6 max-w-md border-l-[3px] border-leaf pl-4 text-lg font-bold leading-snug text-ink">
+            We have a team of income tax lawyers and qualified accountants for your service!
+          </p>
           <p className="mt-6 max-w-md text-[15px] text-muted">
-            We also handle {additional.join(' and ')}.
+            We also handle {additional.slice(0, -1).join(', ')} and {additional[additional.length - 1]}.
           </p>
           <Button variant="primary" href="#contact" className="mt-8">
             Get a free consultation
