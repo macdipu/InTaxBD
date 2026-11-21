@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
-import logo from '@/assets/png/logo.png';
+import AnimatedLogo from '../ui/AnimatedLogo';
 
 const navLinks = [
   { name: 'Services', href: '#services' },
@@ -76,8 +76,13 @@ const Navbar: React.FC = () => {
           aria-label="Main"
           className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-10"
         >
-          <a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="InTaxBD home">
-            <img src={logo} alt="InTaxBD" className="h-11 w-auto object-contain md:h-14" />
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, '#home')}
+            aria-label="InTaxBD home"
+            className="ilogo-link"
+          >
+            <AnimatedLogo className="h-11 md:h-14" />
           </a>
 
           <div className="hidden items-center gap-8 lg:flex">

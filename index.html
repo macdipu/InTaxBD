@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth is-booting">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -109,13 +109,127 @@
         html { scroll-behavior: auto !important; }
       }
 
+      /* ---------- Animated logo ----------
+         Five layers cut from the logo, stacked on one 1974x657 canvas.
+         Build order tells the brand story: name is written, the x lands,
+         the green check is ticked, and the blue arrow launches upward. */
+      :root {
+        --ease-out: cubic-bezier(.22, 1, .36, 1);
+        --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+        --ease-stamp: cubic-bezier(.34, 1.56, .64, 1);
+      }
+      .ilogo {
+        position: relative;
+        display: block;
+        aspect-ratio: 1974 / 657;
+      }
+      .ilogo > img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        user-select: none;
+        pointer-events: none;
+      }
+      .ilogo .l-arrow { transform-origin: 61% 52%; }
+
+      @keyframes il-write {
+        0%   { clip-path: inset(0 97% 0 0); }
+        75%  { clip-path: inset(0 49% 0 0); }
+        100% { clip-path: inset(0 0 0 0); }
+      }
+      @keyframes il-rise {
+        from { opacity: 0; transform: translateY(32%); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes il-tick {
+        from { clip-path: inset(0 50% 0 49.5%); }
+        to   { clip-path: inset(0 28% 0 49.5%); }
+      }
+      @keyframes il-arrow-in {
+        0%   { opacity: 0; transform: translate(-5%, 16%) scale(.5); }
+        60%  { opacity: 1; transform: translate(1%, -4%) scale(1.06); }
+        100% { opacity: 1; transform: translate(0, 0) scale(1); }
+      }
+      @keyframes il-bob {
+        0%, 100% { transform: translate(0, 0); }
+        50%      { transform: translate(1.2%, -5%); }
+      }
+      /* Hover: arrow flies off up-right and reloads from the check */
+      @keyframes il-launch {
+        0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+        40%  { opacity: 0; transform: translate(6%, -22%) scale(1.1); }
+        41%  { opacity: 0; transform: translate(-5%, 16%) scale(.5); }
+        80%  { opacity: 1; transform: translate(.6%, -3%) scale(1.04); }
+        100% { opacity: 1; transform: translate(0, 0) scale(1); }
+      }
+
+      .ilogo--intro .l-letters { animation: il-write .75s var(--ease-out) .1s both; }
+      .ilogo--intro .l-x       { animation: il-rise .5s var(--ease-out) .5s both; }
+      .ilogo--intro .l-bd      { animation: il-rise .5s var(--ease-out) .6s both; }
+      .ilogo--intro .l-check   { animation: il-tick .42s var(--ease-in-out) .9s both; }
+      .ilogo--intro .l-arrow   { animation: il-arrow-in .55s var(--ease-stamp) 1.2s both; }
+
+      @media (hover: hover) {
+        .ilogo-link:hover .l-arrow { animation: il-launch .75s var(--ease-out); }
+        .ilogo-link:hover .l-check { animation: il-tick .4s var(--ease-in-out) .05s both; }
+      }
+      .ilogo-link:focus-visible .l-arrow { animation: il-launch .75s var(--ease-out); }
+      .ilogo-link:focus-visible .l-check { animation: il-tick .4s var(--ease-in-out) .05s both; }
+      .ilogo-link:active .ilogo { transform: scale(.97); }
+      .ilogo-link .ilogo { transition: transform .12s var(--ease-out); }
+
+      /* ---------- Boot loader ---------- */
+      html.is-booting { overflow: hidden; }
+      html.is-booting .rise { animation-play-state: paused; }
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: grid;
+        place-items: center;
+        background: #F3F5F8;
+        transition: opacity .5s var(--ease-out), visibility 0s linear .5s;
+      }
+      #boot .boot-inner {
+        width: min(64vw, 320px);
+        transition: transform .5s var(--ease-out);
+      }
+      #boot .l-arrow {
+        animation: il-arrow-in .55s var(--ease-stamp) 1.2s both,
+                   il-bob 1.4s ease-in-out 1.9s infinite;
+      }
+      #boot .boot-bar {
+        margin: 28px auto 0;
+        width: 46%;
+        height: 3px;
+        border-radius: 2px;
+        background: #D6DCE5;
+        overflow: hidden;
+      }
+      #boot .boot-bar > span {
+        display: block;
+        height: 100%;
+        background: #7CB82F;
+        transform-origin: left;
+        animation: boot-fill 1.5s var(--ease-in-out) .15s both;
+      }
+      @keyframes boot-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      html.boot-done #boot { opacity: 0; visibility: hidden; }
+      html.boot-done #boot .boot-inner { transform: translateY(-14px) scale(.96); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ilogo > img, #boot .l-arrow, #boot .boot-bar > span { animation: none !important; }
+        #boot .boot-bar { display: none; }
+      }
+
       /* Printing: the website is removed from the layout entirely (so no blank pages)
          and only the dedicated one-page checklist sheet is printed. */
       .print-only { display: none; }
       @media print {
         @page { size: A4; margin: 14mm 16mm; }
         html, body { background: #fff !important; }
-        #root { display: none !important; }
+        #root, #boot { display: none !important; }
         .print-only { display: block !important; }
         * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       }
@@ -132,6 +246,19 @@
 </script>
 </head>
   <body>
+    <!-- Boot loader: plain HTML so it shows before the app's JS arrives. Removed by index.tsx. -->
+    <div id="boot" role="status" aria-label="Loading InTaxBD">
+      <div class="boot-inner">
+        <span class="ilogo ilogo--intro" aria-hidden="true">
+          <img class="l-letters" src="/assets/png/logo-layers/letters.webp" alt="" />
+          <img class="l-x" src="/assets/png/logo-layers/x.webp" alt="" />
+          <img class="l-bd" src="/assets/png/logo-layers/bd.webp" alt="" />
+          <img class="l-check" src="/assets/png/logo-layers/check.webp" alt="" />
+          <img class="l-arrow" src="/assets/png/logo-layers/arrow.webp" alt="" />
+        </span>
+        <div class="boot-bar" aria-hidden="true"><span></span></div>
+      </div>
+    </div>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
