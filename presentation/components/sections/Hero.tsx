@@ -145,7 +145,7 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
                 ))}
               </div>
               <div className="mt-1.5 flex justify-between text-xs text-muted" aria-hidden="true">
-                <span>Below 3.5 lacs</span>
+                <span>Below 4 lacs</span>
                 <span>Over 1 crore</span>
               </div>
             </div>

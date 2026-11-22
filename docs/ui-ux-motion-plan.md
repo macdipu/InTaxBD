@@ -176,7 +176,7 @@ Pick the line that ...       Individual tax return   ✓ Salaried employees
 ```
 One fee, set by your income         Total income or assets        Advisory fee
                                     ──────────────────────────────────────────
-No hidden costs ...                 Below 3,50,000 Tk ........... 1,500 Tk
+No hidden costs ...                 Below 4,00,000 Tk ........... 1,500 Tk
                                   ▌ Up to 10 lacs Tk ............ 3,000 Tk  ◀ sliding highlight
 │ All fees exclude VAT ...          10–25 lacs Tk ............... 5,000 Tk
                                     ...

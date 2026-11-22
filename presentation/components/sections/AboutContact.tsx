@@ -7,7 +7,7 @@ import { ContentRepository } from '../../../data/repositories/contentRepository'
 const fieldClass =
   'mt-2 block w-full rounded-md border border-white/25 bg-white/5 px-4 py-3 text-[16px] text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/50 focus:bg-white/10';
 
-type FormKey = 'name' | 'phone' | 'email' | 'message';
+type FormKey = 'name' | 'phone' | 'email' | 'reference' | 'message';
 type Errors = Partial<Record<FormKey, string>>;
 
 const validate = (f: Record<FormKey, string>): Errors => {
@@ -94,7 +94,7 @@ export const About: React.FC = () => {
 export const Contact: React.FC = () => {
   const contact = ContentRepository.getContact();
   const year = ContentRepository.getTaxYear();
-  const [form, setForm] = useState<Record<FormKey, string>>({ name: '', phone: '', email: '', message: '' });
+  const [form, setForm] = useState<Record<FormKey, string>>({ name: '', phone: '', email: '', reference: '', message: '' });
   const [errors, setErrors] = useState<Errors>({});
   const [shakeKey, setShakeKey] = useState<{ field: FormKey | null; n: number }>({ field: null, n: 0 });
   const [status, setStatus] = useState<'idle' | 'opening' | 'sent'>('idle');
@@ -122,6 +122,7 @@ export const Contact: React.FC = () => {
       form.message,
       `Phone: ${form.phone}`,
       form.email && `Email: ${form.email}`,
+      form.reference && `Reference: ${form.reference} (I'd like to ask about special pricing)`,
     ]
       .filter(Boolean)
       .join('\n');
@@ -207,6 +208,28 @@ export const Contact: React.FC = () => {
                 {field('phone', 'Phone', <input type="tel" inputMode="tel" autoComplete="tel" value={form.phone} onChange={update('phone')} className={fieldClass} {...aria('phone')} />)}
               </div>
               {field('email', 'Email (optional)', <input type="email" inputMode="email" autoComplete="email" value={form.email} onChange={update('email')} className={fieldClass} {...aria('email')} />)}
+
+              {/* Reference: new and referred clients can ask for special pricing */}
+              <fieldset className="rounded-xl border border-leaf/40 bg-leaf/[.07] p-4 sm:p-5">
+                <legend className="px-1.5 text-sm font-semibold text-leaf">Reference</legend>
+                <p className="text-[15px] leading-relaxed text-white/75">
+                  First time with us, or referred by someone? Tell us who sent you and we'll share our special pricing.
+                </p>
+                {field(
+                  'reference',
+                  'Referred by (optional)',
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    placeholder="Name and phone of the person who referred you"
+                    value={form.reference}
+                    onChange={update('reference')}
+                    className={fieldClass}
+                    {...aria('reference')}
+                  />,
+                  'mt-3',
+                )}
+              </fieldset>
               {field(
                 'message',
                 'How can we help?',

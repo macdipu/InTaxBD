@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, BadgePercent } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { Odometer, Rule, PenMark } from '../ui/Motion';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
@@ -45,6 +45,7 @@ const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
     (listRef.current?.children[next]?.querySelector('button') as HTMLButtonElement | null)?.focus();
   };
 
+  const specialMessage = `Hello InTaxBD, I'm a new client and would like to ask about special pricing for my ${year.assessmentYear} return. My total income/assets is ${tier.label}. Reference (if any): `;
   const message = `Hello InTaxBD, my total income/assets is ${tier.label}. I would like to file my ${year.assessmentYear} return.`;
 
   return (
@@ -126,6 +127,30 @@ const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
             <Button variant="accent" href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`} className="sm:shrink-0">
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Send this on WhatsApp
+            </Button>
+          </div>
+
+          {/* Special pricing for new and referred clients */}
+          <div data-reveal className="mt-4 flex flex-col gap-4 rounded-xl border border-leaf/60 bg-leaf/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex gap-3.5">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-leaf text-ink">
+                <BadgePercent className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="font-display text-lg font-semibold leading-snug tracking-tight text-ink">
+                  First time with us, or referred by someone?
+                </p>
+                <p className="mt-1 text-[15px] leading-relaxed text-muted">
+                  Feel free to contact us for <PenMark delay={400}>special pricing</PenMark>.
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(specialMessage)}`}
+              className="sm:shrink-0"
+            >
+              Ask about special pricing
             </Button>
           </div>
 

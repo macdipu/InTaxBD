@@ -58,7 +58,7 @@ export const ContentRepository = {
   }),
 
   getPricing: (): PricingTier[] => [
-    { id: 'p1', label: 'Below 3,50,000 Tk', price: '1,500 Tk' },
+    { id: 'p1', label: 'Below 4,00,000 Tk', price: '1,500 Tk' },
     { id: 'p2', label: 'Up to 10 lacs Tk', price: '3,000 Tk' },
     { id: 'p3', label: '10–25 lacs Tk', price: '5,000 Tk' },
     { id: 'p4', label: '25–40 lacs Tk', price: '8,000 Tk' },
@@ -108,7 +108,7 @@ export const ContentRepository = {
     { 
       id: 'f1', 
       question: 'Who needs to file income tax return in Bangladesh?', 
-      answer: 'Generally, if you have a taxable income above the threshold (Tk 3,50,000 for general individuals), own a car, have a trade license, or own specific assets, you must file a return.' 
+      answer: 'Generally, if you have a taxable income above the threshold (Tk 4,00,000 for general individuals), own a car, have a trade license, or own specific assets, you must file a return.' 
     },
     { 
       id: 'f2', 
