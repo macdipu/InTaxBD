@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Phone, Mail, Globe, MessageCircle, Loader2 } from 'lucide-react';
+import { Phone, Mail, Globe, MessageCircle, Loader2, BadgePercent, ChevronDown } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { PenMark, Rule, Stamp } from '../ui/Motion';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
@@ -94,6 +94,7 @@ export const About: React.FC = () => {
 export const Contact: React.FC = () => {
   const contact = ContentRepository.getContact();
   const year = ContentRepository.getTaxYear();
+  const [showRef, setShowRef] = useState(false);
   const [form, setForm] = useState<Record<FormKey, string>>({ name: '', phone: '', email: '', reference: '', message: '' });
   const [errors, setErrors] = useState<Errors>({});
   const [shakeKey, setShakeKey] = useState<{ field: FormKey | null; n: number }>({ field: null, n: 0 });
@@ -209,27 +210,57 @@ export const Contact: React.FC = () => {
               </div>
               {field('email', 'Email (optional)', <input type="email" inputMode="email" autoComplete="email" value={form.email} onChange={update('email')} className={fieldClass} {...aria('email')} />)}
 
-              {/* Reference: new and referred clients can ask for special pricing */}
-              <fieldset className="rounded-xl border border-leaf/40 bg-leaf/[.07] p-4 sm:p-5">
-                <legend className="px-1.5 text-sm font-semibold text-leaf">Reference</legend>
-                <p className="text-[15px] leading-relaxed text-white/75">
-                  First time with us, or referred by someone? Tell us who sent you and we'll share our special pricing.
-                </p>
-                {field(
-                  'reference',
-                  'Referred by (optional)',
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    placeholder="Name and phone of the person who referred you"
-                    value={form.reference}
-                    onChange={update('reference')}
-                    className={fieldClass}
-                    {...aria('reference')}
-                  />,
-                  'mt-3',
-                )}
-              </fieldset>
+              {/* Reference: a quiet, glowing invitation that opens into the field */}
+              <div className="relative pl-4">
+                <span className="absolute inset-y-0 left-0 w-[3px] rounded bg-leaf" aria-hidden="true" />
+                <button
+                  type="button"
+                  onClick={() => setShowRef((v) => !v)}
+                  aria-expanded={showRef}
+                  aria-controls="ref-panel"
+                  className="group flex min-h-[56px] w-full items-center gap-3.5 text-left"
+                >
+                  <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-leaf text-ink">
+                    {!showRef && <span className="absolute inset-0 rounded-full bg-leaf/60 ping" aria-hidden="true" />}
+                    <BadgePercent className="relative h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <span className="flex-1">
+                    <span className="block font-display text-lg font-semibold leading-snug tracking-tight text-white">
+                      Referred by someone? <span className="text-leaf">Get special pricing.</span>
+                    </span>
+                    <span className="block text-sm text-white/60">First time with us counts too. Tap to add a name.</span>
+                  </span>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-leaf transition-transform duration-300 ${showRef ? 'rotate-180' : ''}`}
+                    aria-hidden="true"
+                  />
+                </button>
+                <div
+                  id="ref-panel"
+                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none ${
+                    showRef ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pb-1 pt-1">
+                      {field(
+                        'reference',
+                        'Referred by (optional)',
+                        <input
+                          type="text"
+                          autoComplete="off"
+                          tabIndex={showRef ? 0 : -1}
+                          placeholder="Name and phone of the person who referred you"
+                          value={form.reference}
+                          onChange={update('reference')}
+                          className={fieldClass}
+                          {...aria('reference')}
+                        />,
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
               {field(
                 'message',
                 'How can we help?',

@@ -14,8 +14,9 @@ import { useRevealObserver, useVisible, useBootReady } from '../motion/hooks';
 
 const Home: React.FC = () => {
   // The hero fee finder, services and the pricing table share one selected tier.
-  const [tierIndex, setTierIndex] = useState(1);
+  const [tierIndex, setTierIndex] = useState(0);
   const contact = ContentRepository.getContact();
+  const tiers = ContentRepository.getPricing();
   useRevealObserver();
 
   // Mobile action bar: hidden while the hero slip (which has its own WhatsApp button)
@@ -49,8 +50,14 @@ const Home: React.FC = () => {
         <Button variant="outline" fullWidth href={contact.phoneHref}>
           <Phone className="h-4 w-4" aria-hidden="true" /> Call
         </Button>
-        <Button variant="accent" fullWidth href={`https://wa.me/${contact.whatsappNumber}`}>
-          <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp
+        <Button
+          variant="accent"
+          fullWidth
+          href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
+            `Hello InTaxBD, my total income/assets is ${tiers[tierIndex].label}. Please confirm my exact fee.`,
+          )}`}
+        >
+          <MessageCircle className="h-4 w-4" aria-hidden="true" /> Confirm my fee ({tiers[tierIndex].price})
         </Button>
       </div>
     </div>

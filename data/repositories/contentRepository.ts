@@ -29,11 +29,11 @@ export const ContentRepository = {
       id: 'special',
       title: 'Specialized Services',
       iconName: 'Briefcase',
-      description: ['Freelancer income tax', 'Investment & asset disclosure', 'Tax certificate support', 'Tax planning', 'Rebate planning'],
+      description: ['Freelancer income tax', 'Investment & asset disclosure', 'Tax certificate support', 'Tax planning', 'Rebate planning', 'Financial statements preparation', 'Internal audit & process development', 'SOP development', 'Company registration', 'RJSC return', 'VAT return', 'Training on tax, VAT & regulatory compliance'],
     },
   ],
 
-  getAdditionalServices: (): string[] => ['VAT', 'regulatory compliance', 'company affairs (RJSC)', 'audit support'],
+  getAdditionalServices: (): string[] => ['regulatory compliance', 'audit support'],
 
   // Bangladesh income year runs 1 July to 30 June. Returns for an income year are
   // filed from the following July, so the year rolls over automatically each 1 July.
@@ -80,26 +80,31 @@ export const ContentRepository = {
     {
       id: 'all',
       category: 'For All Clients',
+      whoFor: 'Everyone needs these',
       items: ['Bank statements', 'Investment documents', 'Loan & gift documents', 'Other income details'],
     },
     {
       id: 'employees',
       category: 'Employees',
+      whoFor: 'Only if you have a job',
       items: ['Salary certificate'],
     },
     {
       id: 'business',
       category: 'Business Owners',
+      whoFor: 'Only if you run a business',
       items: ['Income & expense statement', 'Bank statement'],
     },
     {
       id: 'new',
       category: 'New Clients',
+      whoFor: 'Only if this is your first time with us',
       items: ['Last year tax return', 'TIN certificate', 'NID & photo'],
     },
     {
       id: 'additional',
       category: 'Additional',
+      whoFor: 'Only if they apply to you',
       items: ['TDS certificates', 'Advance tax challan', 'Inherited property documents'],
     },
   ],

@@ -23,6 +23,7 @@ export interface HowItWorksStep {
 export interface DocRequirement {
   id: string;
   category: string;
+  whoFor: string;
   items: string[];
 }
 

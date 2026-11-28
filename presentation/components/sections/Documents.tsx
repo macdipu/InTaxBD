@@ -49,7 +49,7 @@ const Documents: React.FC = () => {
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end md:gap-8">
         <SectionHeading
           title="Documents to gather"
-          intro={`Tick each one as you find it. Your ticks are saved on this device. For Assessment Year ${year.assessmentYear} we need papers covering the income year ${year.incomeYear}.`}
+          intro={`Not sure what to bring? Look at the groups below and pick the ones that match you. For Assessment Year ${year.assessmentYear} we need papers from ${year.incomeYear}.`}
         />
         <Button variant="outline" onClick={() => window.print()} className="group hidden shrink-0 md:inline-flex">
           <Printer className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true" />
@@ -57,6 +57,23 @@ const Documents: React.FC = () => {
         </Button>
       </div>
       <PrintChecklist ready={ready} />
+
+      {/* Why the boxes are here */}
+      <ol className="mt-6 grid gap-3 text-[15px] sm:grid-cols-3">
+        {[
+          ['1', 'Find your group', 'Skip any group that is not about you.'],
+          ['2', 'Tick what you have', 'The boxes are only a checklist for you. Nothing is sent when you tick.'],
+          ['3', 'Send us photos', 'When you are ready, send them on WhatsApp. Missing something? We will help.'],
+        ].map(([n, t, d]) => (
+          <li key={n} className="flex gap-3 rounded-lg bg-leaf/10 p-3.5">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf text-sm font-bold text-ink">{n}</span>
+            <span>
+              <span className="block font-semibold text-ink">{t}</span>
+              <span className="block text-muted">{d}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
 
       {/* Progress meter: sticks under the header on phones while you tick */}
       <div className="sticky top-[56px] z-20 -mx-5 mt-8 border-b border-rule bg-paper/95 px-5 py-3 backdrop-blur-md sm:-mx-8 sm:px-8 md:static md:mx-0 md:mt-10 md:rounded-xl md:border md:bg-surface md:p-5">
@@ -85,7 +102,7 @@ const Documents: React.FC = () => {
 
       {allDone && (
         <div className="pop-in mt-5 flex flex-col gap-3 rounded-xl bg-leaf/15 p-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-semibold text-ink">Everything is ready. Send it over and we'll start your return.</p>
+          <p className="font-semibold text-ink">You have everything. Send it over and we'll start your return.</p>
           <Button variant="accent" href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`} className="sm:shrink-0">
             <MessageCircle className="h-5 w-5" aria-hidden="true" />
             Send my documents
@@ -104,6 +121,7 @@ const Documents: React.FC = () => {
                 {doc.category}
                 <Tick mode="toggle" on={done} className="h-5 w-5 text-leaf-deep" strokeWidth={3} />
               </h3>
+              <p className="mt-0.5 text-sm font-semibold text-leaf-deep">{doc.whoFor}</p>
               <ul className="mt-2">
                 {doc.items.map((item, idx) => {
                   const key = `${doc.id}-${idx}`;
@@ -121,12 +139,17 @@ const Documents: React.FC = () => {
                           <Tick mode="toggle" on={checked} className="h-4 w-4 text-white" strokeWidth={3} />
                         </span>
                         <span
-                          className={`strike text-[17px] leading-snug transition-colors duration-300 ${
-                            checked ? 'on text-muted' : 'text-ink'
+                          className={`text-[17px] leading-snug transition-colors duration-300 ${
+                            'text-ink'
                           }`}
                         >
                           {item}
                         </span>
+                        {checked && (
+                          <span className="pop-in ml-auto rounded-full bg-leaf/20 px-2.5 py-0.5 text-[12px] font-semibold text-leaf-deep">
+                            Have it
+                          </span>
+                        )}
                       </label>
                     </li>
                   );

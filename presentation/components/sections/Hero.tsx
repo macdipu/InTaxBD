@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, TrendingDown } from 'lucide-react';
 import { Button } from '../ui/Primitives';
 import { MaskWords, Odometer, Stamp, Rule, Tick, CountUp } from '../ui/Motion';
 import { useInView, usePrefersReducedMotion } from '../../motion/hooks';
@@ -100,7 +100,7 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             id="fee-card"
             ref={slipRef}
             data-reveal
-            className={`slip relative rounded-xl border border-ink bg-surface p-5 shadow-[5px_5px_0_0_#0E1B33] sm:p-6 md:p-8 md:shadow-[6px_6px_0_0_#0E1B33] ${
+            className={`slip relative rounded-xl border border-ink bg-surface p-5 shadow-[5px_5px_0_0_#0E1B33] sm:p-6 md:p-6 md:shadow-[6px_6px_0_0_#0E1B33] ${
               stamped ? 'thud' : ''
             }`}
           >
@@ -110,8 +110,8 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             </div>
             <Rule className="mt-3 text-ink" delay={500} />
 
-            <p id="fee-help" className="mt-5 text-sm text-muted">
-              Your total income or assets for the year
+            <p id="fee-help" className="mt-4 text-sm text-muted">
+              Your total yearly income or assets. Not sure? Pick the closest, we will confirm.
             </p>
             <p className="mt-1 h-8 overflow-hidden font-display text-[22px] font-semibold tracking-tight" aria-hidden="true">
               <span key={tier.id} className="swap-in">
@@ -150,14 +150,31 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
               </div>
             </div>
 
-            <Rule className="mt-5 text-rule" delay={650} />
+            <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="group" aria-label="Quick pick">
+              {tiers.map((t, i) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => { onTierChange(i); if (stamped) restamp(); }}
+                  aria-pressed={i === tierIndex}
+                  className={`min-h-[36px] shrink-0 rounded-full border px-3 text-[13px] font-semibold transition-colors ${
+                    i === tierIndex ? 'border-ink bg-ink text-white' : 'border-rule text-ink hover:border-ink'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
 
-            <div className="relative pt-4" aria-live="polite">
+            <Rule className="mt-3 text-rule" delay={650} />
+
+            <div className="relative pt-3" aria-live="polite">
               <p className="text-sm text-muted">Advisory fee</p>
               <p className="mt-1 font-display text-[52px] font-semibold leading-none tracking-tight text-brand sm:text-6xl">
                 <Odometer value={tier.price} active={rolled} />
               </p>
               <p className="mt-2 text-sm text-muted">Excluding VAT. You see the fee before we start.</p>
+
 
               <Stamp
                 show={stamped}
@@ -172,12 +189,42 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             <Button
               variant="accent"
               fullWidth
-              className="mt-6"
+              className="mt-4"
               href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`}
             >
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
-              Start on WhatsApp
+              Confirm my exact fee on WhatsApp
             </Button>
+            <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[12.5px] text-muted">
+              {['Free to ask', 'No payment now', 'Nothing filed until you approve'].map((t) => (
+                <li key={t} className="flex items-center gap-1.5">
+                  <Tick className="h-3 w-3 text-leaf-deep" delay={0} strokeWidth={3} />
+                  {t}
+                </li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              onClick={() => scrollToId('contact')}
+              className="group mt-4 block w-full rounded-lg border border-leaf/60 bg-leaf/10 p-3.5 text-left transition-colors hover:bg-leaf/20"
+            >
+              <span className="block text-[15px] font-semibold text-ink">Know someone who uses InTaxBD? Pay less.</span>
+              <span className="mt-2.5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center">
+                <span className="rounded-md bg-surface px-2 py-2">
+                  <span className="block text-[11px] text-muted">Normal fee</span>
+                  <span className="block font-display text-lg font-semibold text-ink/60 line-through decoration-2">{tier.price}</span>
+                </span>
+                <TrendingDown className="h-5 w-5 text-leaf-deep transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true" />
+                <span className="rounded-md bg-leaf px-2 py-2">
+                  <span className="block text-[11px] text-ink/70">With a reference</span>
+                  <span className="block font-display text-lg font-semibold text-ink">Lower fee</span>
+                </span>
+              </span>
+              <span className="mt-2 block text-[13px] leading-snug text-muted">
+                Tell us who referred you. We confirm your lower fee before we start. Tap to add.
+              </span>
+            </button>
           </div>
 
           {/* Mobile: secondary links sit under the slip */}
