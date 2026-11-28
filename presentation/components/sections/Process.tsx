@@ -4,6 +4,7 @@ import { Stamp, Tick, PenMark } from '../ui/Motion';
 import { useBootReady } from '../../motion/hooks';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 import { scrollToId } from '../layout/Navbar';
+import ReturnTracker from '../widgets/ReturnTracker';
 
 const Process: React.FC = () => {
   const steps = ContentRepository.getProcessSteps();
@@ -65,6 +66,7 @@ const Process: React.FC = () => {
                 </>
               }
             />
+            <ReturnTracker steps={steps} reached={reached} />
             <Button
               variant="primary"
               href="#contact"

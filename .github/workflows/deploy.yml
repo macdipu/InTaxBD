@@ -1,6 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
+  schedule:
+    - cron: '0 */6 * * *' # refresh NBR notices every 6 hours
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -21,7 +24,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,6 +38,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Fetch latest NBR notices
+        run: node scripts/fetch-nbr.mjs
 
       - name: Build project
         run: npm run build

@@ -1,65 +1,54 @@
 import React, { useState } from 'react';
-import { Phone, MessageCircle } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import Hero from '../components/sections/Hero';
+import StartHere from '../components/sections/StartHere';
+import ChatBubble from '../components/widgets/ChatBubble';
 import Services from '../components/sections/Services';
 import Pricing from '../components/sections/Pricing';
 import Process from '../components/sections/Process';
 import Documents from '../components/sections/Documents';
 import FAQ from '../components/sections/FAQ';
 import AboutContact from '../components/sections/AboutContact';
-import { Button } from '../components/ui/Primitives';
+import { Section } from '../components/ui/Primitives';
+import TabBar from '../components/layout/TabBar';
+import NbrNews from '../components/widgets/NbrNews';
 import { ContentRepository } from '../../data/repositories/contentRepository';
-import { useRevealObserver, useVisible, useBootReady } from '../motion/hooks';
+import { useLang } from '../i18n/lang';
+import { useRevealObserver, useVisible } from '../motion/hooks';
 
 const Home: React.FC = () => {
   // The hero fee finder, services and the pricing table share one selected tier.
   const [tierIndex, setTierIndex] = useState(0);
   const contact = ContentRepository.getContact();
   const tiers = ContentRepository.getPricing();
+  const { t } = useLang();
   useRevealObserver();
 
   // Mobile action bar: hidden while the hero slip (which has its own WhatsApp button)
   // or the contact form is on screen.
-  const ready = useBootReady();
-  const feeCardVisible = useVisible('fee-card');
   const contactVisible = useVisible('contact');
-  const showBar = ready && !feeCardVisible && !contactVisible;
+  const pricingVisible = useVisible('pricing');
+  const docsVisible = useVisible('documents');
+  const active = contactVisible ? 'contact' : docsVisible ? 'documents' : pricingVisible ? 'pricing' : 'home';
 
   return (
     <div className="relative">
       <Navbar />
       <main>
         <Hero tierIndex={tierIndex} onTierChange={setTierIndex} />
+        <StartHere onTierChange={setTierIndex} />
         <Services onTierChange={setTierIndex} />
         <Pricing tierIndex={tierIndex} onTierChange={setTierIndex} />
         <Process />
         <Documents />
+        <Section id="nbr-news-section" className="border-t border-rule empty:hidden"><NbrNews /></Section>
         <FAQ />
         <AboutContact />
       </main>
 
-      {/* Sticky mobile actions */}
-      <div
-        className={`fixed inset-x-0 bottom-0 z-40 flex gap-3 border-t border-rule bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none lg:hidden ${
-          showBar ? 'translate-y-0' : 'translate-y-full'
-        }`}
-        aria-hidden={!showBar}
-        {...(!showBar ? { inert: true } : {})}
-      >
-        <Button variant="outline" fullWidth href={contact.phoneHref}>
-          <Phone className="h-4 w-4" aria-hidden="true" /> Call
-        </Button>
-        <Button
-          variant="accent"
-          fullWidth
-          href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
-            `Hello InTaxBD, my total income/assets is ${tiers[tierIndex].label}. Please confirm my exact fee.`,
-          )}`}
-        >
-          <MessageCircle className="h-4 w-4" aria-hidden="true" /> Confirm my fee ({tiers[tierIndex].price})
-        </Button>
-      </div>
+      <ChatBubble hide={contactVisible} waText={`Hello InTaxBD, I need help finding my fee. My income/assets is around ${tiers[tierIndex].label}.`} />
+
+      <TabBar active={active} waText={`Hello InTaxBD, my total income/assets is ${tiers[tierIndex].label}. Please confirm my exact fee.`} />
     </div>
   );
 };

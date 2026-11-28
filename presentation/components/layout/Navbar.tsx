@@ -3,10 +3,13 @@ import { Phone, MessageCircle } from 'lucide-react';
 import { Button } from '../ui/Primitives';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 import AnimatedLogo from '../ui/AnimatedLogo';
+import ThemeToggle from '../ui/ThemeToggle';
+import { LangToggle, useLang } from '../../i18n/lang';
 
 const navLinks = [
   { name: 'Services', href: '#services' },
   { name: 'Pricing', href: '#pricing' },
+  { name: 'Tax calculator', href: '#/calculator' },
   { name: 'How it works', href: '#how-it-works' },
   { name: 'Documents', href: '#documents' },
   { name: 'FAQ', href: '#faq' },
@@ -28,6 +31,7 @@ const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('');
   const contact = ContentRepository.getContact();
   const year = ContentRepository.getTaxYear();
+  const { t } = useLang();
 
   const progressRef = useRef<HTMLSpanElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
@@ -94,6 +98,10 @@ const Navbar: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsMobileOpen(false);
+    if (href.startsWith('#/')) {
+      window.location.hash = href;
+      return;
+    }
     setActiveSection(href.substring(1));
     // Let the body unlock before scrolling when the mobile sheet was open.
     requestAnimationFrame(() => scrollToId(href.substring(1)));
@@ -125,7 +133,7 @@ const Navbar: React.FC = () => {
             />
           </a>
 
-          <div ref={linksRef} className="relative hidden items-center gap-7 lg:flex">
+          <div ref={linksRef} className="relative hidden items-center gap-6 xl:flex">
             {navLinks.map((link) => {
               const id = link.href.substring(1);
               const isActive = activeSection === id;
@@ -136,11 +144,11 @@ const Navbar: React.FC = () => {
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   aria-current={isActive ? 'true' : undefined}
-                  className={`py-1.5 text-[15px] font-medium transition-colors ${
+                  className={`whitespace-nowrap py-1.5 text-[15px] font-medium transition-colors ${
                     isActive ? 'text-ink' : 'text-muted hover:text-ink'
                   }`}
                 >
-                  {link.name}
+                  {t('nav.' + link.name, link.name)}
                 </a>
               );
             })}
@@ -155,7 +163,9 @@ const Navbar: React.FC = () => {
             />
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden items-center gap-2 xl:flex">
+            <LangToggle />
+            <ThemeToggle />
             <Button variant="primary" href={contact.phoneHref} className="!min-h-0 !px-4 !py-2.5">
               <Phone className="h-4 w-4" aria-hidden="true" />
               Call {contact.phoneDisplay}
@@ -163,8 +173,11 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Burger morphs into a close mark */}
+          <div className="-mr-2 flex items-center gap-1 xl:hidden">
+            <LangToggle className="!h-10" />
+            <ThemeToggle className="!h-10 !w-10" />
           <button
-            className="-mr-2 grid h-11 w-11 place-items-center lg:hidden"
+            className="grid h-11 w-11 place-items-center"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-expanded={isMobileOpen}
             aria-controls="mobile-menu"
@@ -190,6 +203,7 @@ const Navbar: React.FC = () => {
               ))}
             </span>
           </button>
+          </div>
         </nav>
 
         {/* Filing progress: page scroll position */}
@@ -204,7 +218,7 @@ const Navbar: React.FC = () => {
       {/* Mobile menu: a sheet that unrolls from the top */}
       <div
         id="mobile-menu"
-        className={`fixed inset-0 z-40 flex flex-col bg-paper px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-24 transition-[clip-path] duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none sm:px-8 lg:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col bg-paper px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-24 transition-[clip-path] duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none sm:px-8 xl:hidden ${
           isMobileOpen ? '[clip-path:inset(0_0_0_0)]' : 'pointer-events-none [clip-path:inset(0_0_100%_0)]'
         }`}
         aria-hidden={!isMobileOpen}
@@ -224,7 +238,7 @@ const Navbar: React.FC = () => {
                 } ${isMobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'}`}
                 style={{ transitionDelay: isMobileOpen ? `${120 + i * 45}ms` : '0ms' }}
               >
-                {link.name}
+                {t('nav.' + link.name, link.name)}
                 {active && <span className="h-2.5 w-2.5 rounded-full bg-leaf" aria-hidden="true" />}
               </a>
             );

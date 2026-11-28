@@ -144,6 +144,13 @@ const Documents: React.FC = () => {
       </div>
 
       {allDone && (
+        <div className="pointer-events-none relative h-0" aria-hidden="true">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <span key={i} className="confetti" style={{ '--x': `${(i * 37) % 100}%`, '--r': `${(i * 53) % 360}deg`, '--d': `${(i % 7) * 70}ms`, background: ['#7CB82F', '#15409A', '#F2B134', '#E5484D'][i % 4] } as React.CSSProperties} />
+          ))}
+        </div>
+      )}
+      {allDone && (
         <div className="pop-in mt-5 flex flex-col gap-3 rounded-xl bg-leaf/15 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-semibold text-ink">You have everything. Send it over and we'll start your return.</p>
           <Button variant="accent" href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`} className="sm:shrink-0">

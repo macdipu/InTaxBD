@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MessageCircle, TrendingDown } from 'lucide-react';
+import { MessageCircle, TrendingDown, Calculator } from 'lucide-react';
 import { Button } from '../ui/Primitives';
 import { MaskWords, Odometer, Stamp, Rule, Tick, CountUp } from '../ui/Motion';
 import { useInView, usePrefersReducedMotion } from '../../motion/hooks';
 import { ContentRepository } from '../../../data/repositories/contentRepository';
 import { scrollToId } from '../layout/Navbar';
+import { useLang } from '../../i18n/lang';
+import DeadlineChip from '../widgets/DeadlineChip';
 
 interface HeroProps {
   tierIndex: number;
@@ -18,6 +20,7 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
   const contact = ContentRepository.getContact();
   const tier = tiers[tierIndex];
   const reduce = usePrefersReducedMotion();
+  const { t } = useLang();
 
   // Slip timeline: slide in → fee rolls up from zero → "Ready to file" stamp lands.
   const slipRef = useRef<HTMLDivElement>(null);
@@ -57,10 +60,10 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
   const fill = (tierIndex / (tiers.length - 1)) * 100;
 
   return (
-    <section id="home" className="px-5 pb-14 pt-24 sm:px-8 md:px-10 md:pb-24 md:pt-36">
+    <section id="home" className="overflow-x-clip px-5 pb-14 pt-24 sm:px-8 md:px-10 md:pb-24 md:pt-36">
       <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-12 lg:gap-14">
         {/* Left: the promise */}
-        <div className="lg:col-span-7 lg:pt-4" data-reveal>
+        <div className="min-w-0 lg:col-span-7 lg:pt-4" data-reveal>
           <div className="rv-fade inline-flex flex-col gap-0.5 rounded-xl border border-rule bg-surface px-4 py-2.5 text-sm">
             <p className="flex items-center gap-2 font-semibold text-ink">
               <span className="relative h-2 w-2 rounded-full bg-leaf ping" aria-hidden="true" />
@@ -69,16 +72,17 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             <p className="pl-4 text-[13px] text-muted">Income year {year.incomeYear}</p>
           </div>
 
+          <div className="rv-fade mt-3"><DeadlineChip /></div>
+
           <h1 className="mt-6 font-display text-[40px] font-semibold leading-[1.02] tracking-tight min-[400px]:text-[46px] sm:text-6xl md:mt-7 lg:text-[76px]">
-            <MaskWords text="File your income tax return in 48 hours." delay={80} />
+            <MaskWords key={t('hero.title')} text={t('hero.title')} delay={80} />
           </h1>
 
           <p
             className="rv-fade mt-5 max-w-lg text-[17px] leading-relaxed text-muted md:mt-7 md:text-lg"
             style={{ '--d': '420ms' } as React.CSSProperties}
           >
-            For individuals, freelancers, NRBs and businesses in Bangladesh. You send the documents. We
-            calculate, confirm the figures with you, and submit to the NBR.
+            {t('hero.sub')}
           </p>
 
           <div
@@ -86,16 +90,19 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             style={{ '--d': '520ms' } as React.CSSProperties}
           >
             <Button variant="primary" href="#pricing" onClick={(e) => { e.preventDefault(); scrollToId('pricing'); }}>
-              See all fees
+              {t('hero.fees')}
             </Button>
             <Button variant="outline" href="#how-it-works" onClick={(e) => { e.preventDefault(); scrollToId('how-it-works'); }}>
-              How filing works
+              {t('hero.how')}
+            </Button>
+            <Button variant="outline" href="#/calculator">
+              <Calculator className="h-4 w-4" aria-hidden="true" /> {t('calc.nav')}
             </Button>
           </div>
         </div>
 
         {/* Right: the return slip (fee finder) */}
-        <div className="lg:col-span-5">
+        <div className="min-w-0 lg:col-span-5">
           <div
             id="fee-card"
             ref={slipRef}
@@ -105,13 +112,13 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             }`}
           >
             <div className="flex items-baseline justify-between gap-4">
-              <h2 className="font-display text-xl font-semibold tracking-tight">Find your fee</h2>
+              <h2 className="font-display text-xl font-semibold tracking-tight">{t('fee.title')}</h2>
               <span className="text-sm font-medium text-muted">AY {year.assessmentYear}</span>
             </div>
             <Rule className="mt-3 text-ink" delay={500} />
 
             <p id="fee-help" className="mt-4 text-sm text-muted">
-              Your total yearly income or assets. Not sure? Pick the closest, we will confirm.
+              {t('fee.help')}
             </p>
             <p className="mt-1 h-8 overflow-hidden font-display text-[22px] font-semibold tracking-tight" aria-hidden="true">
               <span key={tier.id} className="swap-in">
@@ -169,11 +176,11 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             <Rule className="mt-3 text-rule" delay={650} />
 
             <div className="relative pt-3" aria-live="polite">
-              <p className="text-sm text-muted">Advisory fee</p>
+              <p className="text-sm text-muted">{t('fee.advisory')}</p>
               <p className="mt-1 font-display text-[52px] font-semibold leading-none tracking-tight text-brand sm:text-6xl">
                 <Odometer value={tier.price} active={rolled} />
               </p>
-              <p className="mt-2 text-sm text-muted">Excluding VAT. You see the fee before we start.</p>
+              <p className="mt-2 text-sm text-muted">{t('fee.vat')}</p>
 
 
               <Stamp
@@ -193,13 +200,13 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
               href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`}
             >
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
-              Confirm my exact fee on WhatsApp
+              {t('fee.cta')}
             </Button>
             <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[12.5px] text-muted">
-              {['Free to ask', 'No payment now', 'Nothing filed until you approve'].map((t) => (
-                <li key={t} className="flex items-center gap-1.5">
+              {['fee.t1', 'fee.t2', 'fee.t3'].map((k) => (
+                <li key={k} className="flex items-center gap-1.5">
                   <Tick className="h-3 w-3 text-leaf-deep" delay={0} strokeWidth={3} />
-                  {t}
+                  {t(k)}
                 </li>
               ))}
             </ul>
@@ -228,7 +235,10 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
           </div>
 
           {/* Mobile: secondary links sit under the slip */}
-          <div className="mt-6 grid grid-cols-2 gap-3 lg:hidden">
+          <Button variant="primary" fullWidth href="#/calculator" className="mt-6 lg:hidden">
+            <Calculator className="h-4 w-4" aria-hidden="true" /> {t('calc.nav')}
+          </Button>
+          <div className="mt-3 grid grid-cols-2 gap-3 lg:hidden">
             <Button variant="outline" href="#pricing" onClick={(e) => { e.preventDefault(); scrollToId('pricing'); }} className="!px-3">
               All fees
             </Button>

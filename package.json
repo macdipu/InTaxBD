@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "feed": "node scripts/fetch-nbr.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "share": "cloudflared tunnel --url http://localhost:3000"

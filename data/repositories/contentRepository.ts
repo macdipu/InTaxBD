@@ -57,6 +57,9 @@ export const ContentRepository = {
     websiteHref: 'https://www.intaxbd.online',
   }),
 
+  // NBR individual return deadline. UNCONFIRMED: check the current NBR notice and update.
+  getDeadline: () => ({ date: '2026-11-30', label: '30 November 2026' }),
+
   getPricing: (): PricingTier[] => [
     { id: 'p1', label: 'Below 4,00,000 Tk', price: '1,500 Tk' },
     { id: 'p2', label: 'Up to 10 lacs Tk', price: '3,000 Tk' },
