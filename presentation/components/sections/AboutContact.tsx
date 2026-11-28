@@ -21,6 +21,12 @@ const validate = (f: Record<FormKey, string>): Errors => {
 
 export const About: React.FC = () => {
   const leader = ContentRepository.getLeadership();
+  const team = [
+    ['CA professionals', 'Chartered accountants for audit, accounts and financial statements'],
+    ['Income Tax Practitioners (ITP)', 'Registered practitioners who prepare and file your return'],
+    ['Income tax lawyers', 'Advice on notices, disputes and legal compliance'],
+    ['Qualified accountants', 'Day-to-day calculation, VAT and bookkeeping support'],
+  ];
   const expertise = ['Income tax', 'VAT', 'Regulatory compliance', 'Company affairs (RJSC)'];
 
   return (
@@ -53,7 +59,7 @@ export const About: React.FC = () => {
           <div className="lg:col-span-8">
             <SectionHeading
               title="Simplifying tax for individuals, small businesses and companies"
-              intro="Expert guidance for Tax, VAT, Regulatory Compliance and Company Affairs (RJSC), from a team of income tax lawyers and qualified accountants."
+              intro="Expert guidance for Tax, VAT, Regulatory Compliance and Company Affairs (RJSC), from one team of CA professionals, Income Tax Practitioners (ITP), income tax lawyers and qualified accountants."
             />
 
             <ul data-reveal className="mt-8 grid gap-x-8 gap-y-1 sm:grid-cols-2 md:mt-10">
@@ -69,6 +75,22 @@ export const About: React.FC = () => {
                 </li>
               ))}
             </ul>
+
+            <div data-reveal className="mt-10 md:mt-12">
+              <h3 className="font-display text-2xl font-semibold tracking-tight">The team behind your return</h3>
+              <p className="mt-2 max-w-2xl text-[15px] text-muted">
+                You do not deal with one person. You get a full team, so every part of your filing is checked by the right expert.
+              </p>
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                {team.map(([role, what]) => (
+                  <li key={role} className="relative rounded-lg border border-rule bg-surface p-4 pl-5">
+                    <span className="absolute inset-y-3 left-0 w-[3px] rounded bg-leaf" aria-hidden="true" />
+                    <p className="font-semibold text-ink">{role}</p>
+                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{what}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <div data-reveal className="mt-10 rounded-xl bg-surface p-5 md:mt-12 md:p-8">
               <h3 className="font-display text-2xl font-semibold tracking-tight">What we stand for</h3>

@@ -28,7 +28,7 @@ const Services: React.FC<{ onTierChange: (i: number) => void }> = ({ onTierChang
             <div data-reveal className="relative mt-6 max-w-md pl-4">
               <span className="rv-bar absolute inset-y-0 left-0 w-[3px] rounded bg-leaf" aria-hidden="true" />
               <p className="rv-fade text-lg font-bold leading-snug text-ink" style={{ '--d': '200ms' } as React.CSSProperties}>
-                We have a team of income tax lawyers and qualified accountants for your service!
+                Your return is handled by CA professionals, Income Tax Practitioners (ITP), income tax lawyers and qualified accountants, working as one team.
               </p>
             </div>
             <p className="mt-6 max-w-md text-[15px] text-muted">

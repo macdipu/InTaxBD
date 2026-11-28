@@ -8,7 +8,7 @@ export const ContentRepository = {
   getHeroStats: (): Stat[] => [
     { id: '1', value: '48h', label: 'Processing', description: 'To prepare your return once documents arrive' },
     { id: '2', value: '500+', label: 'Clients', description: 'Individuals and businesses filed for' },
-    { id: '3', value: 'Expert', label: 'Team', description: 'Income tax lawyers and qualified accountants' },
+    { id: '3', value: 'Expert', label: 'Team', description: 'CA professionals, Income Tax Practitioners (ITP), tax lawyers and accountants' },
     { id: '4', value: '100%', label: 'Compliance', description: 'Filed in line with the Income Tax Act 2023' },
   ],
 
