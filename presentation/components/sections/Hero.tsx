@@ -72,8 +72,6 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             <p className="pl-4 text-[13px] text-muted">Income year {year.incomeYear}</p>
           </div>
 
-          <div className="rv-fade mt-3"><DeadlineChip /></div>
-
           <h1 className="mt-6 font-display text-[40px] font-semibold leading-[1.02] tracking-tight min-[400px]:text-[46px] sm:text-6xl md:mt-7 lg:text-[76px]">
             <MaskWords key={t('hero.title')} text={t('hero.title')} delay={80} />
           </h1>
@@ -84,6 +82,8 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
           >
             {t('hero.sub')}
           </p>
+
+          <div className="rv-fade mt-6 md:mt-8"><DeadlineChip /></div>
 
           <div
             className="rv-fade mt-9 hidden flex-wrap gap-3 lg:flex"

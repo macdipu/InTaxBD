@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
       >
         <nav
           aria-label="Main"
-          className={`mx-auto flex max-w-6xl items-center justify-between px-5 transition-[padding] duration-300 sm:px-8 md:px-10 ${
+          className={`mx-auto flex max-w-7xl items-center justify-between gap-8 px-5 transition-[padding] duration-300 sm:px-8 md:px-10 ${
             isScrolled ? 'py-2.5 md:py-3' : 'py-3.5 md:py-5'
           }`}
         >
@@ -126,14 +126,14 @@ const Navbar: React.FC = () => {
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
             aria-label="InTaxBD home"
-            className="ilogo-link -m-1 rounded p-1"
+            className="ilogo-link -m-1 shrink-0 rounded p-1"
           >
             <AnimatedLogo
               className={`transition-[height] duration-300 ${isScrolled ? 'h-9 md:h-11' : 'h-10 md:h-14'}`}
             />
           </a>
 
-          <div ref={linksRef} className="relative hidden items-center gap-6 xl:flex">
+          <div ref={linksRef} className="relative hidden flex-1 items-center justify-center gap-5 xl:flex 2xl:gap-7">
             {navLinks.map((link) => {
               const id = link.href.substring(1);
               const isActive = activeSection === id;
@@ -163,12 +163,12 @@ const Navbar: React.FC = () => {
             />
           </div>
 
-          <div className="hidden items-center gap-2 xl:flex">
+          <div className="hidden shrink-0 items-center gap-2 xl:flex">
             <LangToggle />
             <ThemeToggle />
             <Button variant="primary" href={contact.phoneHref} className="!min-h-0 !px-4 !py-2.5">
               <Phone className="h-4 w-4" aria-hidden="true" />
-              Call {contact.phoneDisplay}
+              Call<span className="hidden 2xl:inline"> {contact.phoneDisplay}</span>
             </Button>
           </div>
 
