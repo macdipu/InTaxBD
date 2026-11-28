@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>InTaxBD - Income Tax Return Filing in Bangladesh</title>
     <meta name="description" content="File your Bangladesh income tax return for assessment year 2026-27. Clear fees, 48-hour preparation, and support for individuals, freelancers, NRBs and businesses." />
-    <meta name="theme-color" content="#F3F5F8" />
+    <meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#090F1C" media="(prefers-color-scheme: dark)" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="InTaxBD" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <script>
+      try { var t = localStorage.getItem('intaxbd-theme'); if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+    </script>
 
     <!-- Fonts: Bricolage Grotesque (display) + Public Sans (text, tabular figures for money) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,14 +31,14 @@
         theme: {
           extend: {
             colors: {
-              paper: '#F3F5F8',
-              surface: '#FFFFFF',
-              ink: '#0E1B33',
-              muted: '#4B5870',
-              rule: '#D6DCE5',
-              brand: { DEFAULT: '#15409A', deep: '#0B2A6B' },
-              leaf: { DEFAULT: '#7CB82F', deep: '#3F6B0C' },
-              night: '#0A1630',
+              paper: 'rgb(var(--c-paper) / <alpha-value>)',
+              surface: 'rgb(var(--c-surface) / <alpha-value>)',
+              ink: 'rgb(var(--c-ink) / <alpha-value>)',
+              muted: 'rgb(var(--c-muted) / <alpha-value>)',
+              rule: 'rgb(var(--c-rule) / <alpha-value>)',
+              brand: { DEFAULT: 'rgb(var(--c-brand) / <alpha-value>)', deep: 'rgb(var(--c-brand-deep) / <alpha-value>)' },
+              leaf: { DEFAULT: 'rgb(var(--c-leaf) / <alpha-value>)', deep: 'rgb(var(--c-leaf-deep) / <alpha-value>)' },
+              night: 'rgb(var(--c-night) / <alpha-value>)',
             },
             fontFamily: {
               display: ['"Bricolage Grotesque"', 'sans-serif'],
@@ -40,11 +50,46 @@
     </script>
 
     <style>
+      :root {
+        --c-paper: 243 245 248; --c-surface: 255 255 255; --c-ink: 14 27 51; --c-muted: 75 88 112; --c-rule: 214 220 229;
+        --c-brand: 21 64 154; --c-brand-deep: 11 42 107; --c-leaf: 124 184 47; --c-leaf-deep: 63 107 12; --c-night: 10 22 48;
+        --c-on-ink: 255 255 255;
+        color-scheme: light;
+      }
+      html.dark {
+        --c-paper: 9 15 28; --c-surface: 18 27 45; --c-ink: 232 237 245; --c-muted: 154 167 189; --c-rule: 40 52 76;
+        --c-brand: 96 146 255; --c-brand-deep: 70 120 230; --c-leaf: 124 184 47; --c-leaf-deep: 112 176 40; --c-night: 5 10 20;
+        --c-on-ink: 9 15 28;
+        color-scheme: dark;
+      }
+      /* Parts that were written with a literal white on ink / brand */
+      html.dark .bg-ink.text-white, html.dark .hover\:bg-ink:hover { color: rgb(var(--c-on-ink)); }
+      html.dark .bg-brand.text-white { color: #fff; }
+      html.dark .bg-brand { background-color: rgb(43 85 190 / var(--tw-bg-opacity, 1)); }
+      html.dark .bg-brand\/10 { background-color: rgb(96 146 255 / .12); }
+      html.dark .bg-leaf-deep.text-white, html.dark .bg-leaf-deep { color: #08140a; }
+      html.dark .on-dark, html.dark .bg-night { color: #fff; }
+      html.dark .fee-range::-webkit-slider-runnable-track { background: rgb(var(--c-rule)); }
+      html.dark .fee-range::-moz-range-track { background: rgb(var(--c-rule)); }
+      html.dark img[alt^="Portrait"] { filter: brightness(.92); }
+      .confetti { position: absolute; top: 0; left: var(--x); width: 8px; height: 12px; border-radius: 2px; opacity: 0; transform: rotate(var(--r)); animation: confetti-fall 1.4s var(--d) ease-out forwards; }
+      @keyframes confetti-fall { 0% { opacity: 1; transform: translateY(-10px) rotate(var(--r)); } 100% { opacity: 0; transform: translateY(160px) rotate(calc(var(--r) + 360deg)); } }
+      @media (prefers-reduced-motion: reduce) { .confetti { display: none; } }
+      /* App-like feel on touch devices */
+      html { -webkit-text-size-adjust: 100%; }
+      * { -webkit-tap-highlight-color: transparent; }
+      @media (hover: none) and (pointer: coarse) {
+        body { overscroll-behavior-y: none; -webkit-touch-callout: none; }
+        button, [role="button"], summary, nav a { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        a, button { transition-property: transform, background-color, color, border-color, opacity; }
+        button:active:not(:disabled), a.tab:active { transform: scale(.96); }
+      }
+      @media (max-width: 1023px) { body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); } }
       html { scroll-padding-top: 6rem; }
       html, body { overflow-x: clip; }
       body {
-        background: #F3F5F8;
-        color: #0E1B33;
+        background: rgb(var(--c-paper));
+        color: rgb(var(--c-ink));
         font-feature-settings: 'tnum' 1;
         -webkit-font-smoothing: antialiased;
       }
@@ -426,7 +471,7 @@
         z-index: 100;
         display: grid;
         place-items: center;
-        background: #F3F5F8;
+        background: rgb(var(--c-paper));
         transition: opacity .5s var(--ease-out), visibility 0s linear .5s;
       }
       #boot .boot-inner {
@@ -483,7 +528,7 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-Bs42hGcj.js"></script>
+  <script type="module" crossorigin src="/assets/index-D3F5em38.js"></script>
 </head>
   <body>
     <!-- Boot loader: plain HTML so it shows before the app's JS arrives. Removed by index.tsx. -->
