@@ -1,3 +1,4 @@
+import { useLang } from '../../i18n/lang';
 import React, { useEffect, useState } from 'react';
 import { Printer, MessageCircle, Info } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
@@ -25,6 +26,7 @@ const loadReady = (): Set<string> => {
 };
 
 const Documents: React.FC = () => {
+  const { lang } = useLang();
   const docs = ContentRepository.getDocuments();
   const year = ContentRepository.getTaxYear();
   const contact = ContentRepository.getContact();
@@ -122,7 +124,15 @@ const Documents: React.FC = () => {
       <div className="sticky top-[56px] z-20 -mx-5 mt-8 border-b border-rule bg-paper/95 px-5 py-3 backdrop-blur-md sm:-mx-8 sm:px-8 md:static md:mx-0 md:mt-10 md:rounded-xl md:border md:bg-surface md:p-5">
         <div className="flex items-center justify-between gap-4">
           <p className="text-[15px] font-semibold text-ink" aria-live="polite">
-            <Odometer value={String(count)} /> of {total} ready
+            {lang === 'bn' ? (
+              <>
+                {total}টার মধ্যে <Odometer value={String(count)} />টা তৈরি
+              </>
+            ) : (
+              <>
+                <Odometer value={String(count)} /> of {total} ready
+              </>
+            )}
           </p>
           <div className="relative h-8">
             <Stamp show={allDone} className="!text-[12px]">

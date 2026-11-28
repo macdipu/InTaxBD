@@ -8,7 +8,7 @@ const ReturnTracker: React.FC<{ steps: { id: string; title: string }[]; reached:
     <div className="mt-8 hidden rounded-xl border border-ink bg-surface p-5 shadow-[5px_5px_0_0_#0E1B33] lg:block" aria-hidden="true">
       <div className="flex items-baseline justify-between">
         <p className="font-display text-lg font-semibold tracking-tight">Your return</p>
-        <p className="text-[13px] text-muted">{Math.min(reached, steps.length)} of {steps.length} done</p>
+        <p className="text-[13px] text-muted">{`${Math.min(reached, steps.length)} of ${steps.length} done`}</p>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-rule">
         <div className="h-full rounded-full bg-leaf transition-[width] duration-500 ease-out" style={{ width: `${(Math.min(reached, steps.length) / steps.length) * 100}%` }} />

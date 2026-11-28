@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Phone, MessageCircle, Info, Plus, X, HelpCircle, RotateCcw, Lightbulb } from 'lucide-react';
+import { MessageCircle, Info, Plus, X, HelpCircle, RotateCcw, Lightbulb } from 'lucide-react';
 import { Button } from '../components/ui/Primitives';
-import AnimatedLogo from '../components/ui/AnimatedLogo';
-import ThemeToggle from '../components/ui/ThemeToggle';
-import { LangToggle, useLang } from '../i18n/lang';
+import Navbar from '../components/layout/Navbar';
+import { useLang } from '../i18n/lang';
 import DeadlineChip from '../components/widgets/DeadlineChip';
 import NbrNews from '../components/widgets/NbrNews';
+import TabBar from '../components/layout/TabBar';
 import ChatBubble from '../components/widgets/ChatBubble';
 import { ContentRepository } from '../../data/repositories/contentRepository';
 import { calculateTax, TAX_RULES, TaxInput, TaxpayerCategory } from '../../domain/tax/bangladeshTax';
@@ -248,23 +248,9 @@ const Calculator: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-ink">
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-rule bg-paper/95 px-4 py-3 backdrop-blur-md sm:px-8">
-        <a href="#home" aria-label="InTaxBD home" className="ilogo-link block shrink-0">
-          <AnimatedLogo className="h-9 sm:h-11" />
-        </a>
-        <div className="flex items-center gap-1 sm:gap-2">
-          <LangToggle className="!h-10" />
-          <ThemeToggle className="!h-10 !w-10" />
-          <a href="#home" className="inline-flex min-h-[44px] items-center gap-1.5 px-2 text-[15px] font-semibold text-brand">
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {t('calc.back')}
-          </a>
-          <a href={contact.phoneHref} className="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-brand px-3.5 text-[15px] font-semibold text-white">
-            <Phone className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">Call</span>
-          </a>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="mx-auto max-w-6xl px-4 pb-28 pt-8 sm:px-8 md:pt-12 lg:pb-16">
+      <main className="mx-auto max-w-6xl px-5 pb-48 pt-24 sm:px-8 md:px-10 md:pt-36 lg:pb-16">
         <p className="text-sm font-semibold text-leaf-deep">Assessment Year {TAX_RULES.assessmentYear} · Income year {TAX_RULES.incomeYear}</p>
         <h1 className="mt-2 font-display text-[34px] font-semibold leading-[1.05] tracking-tight sm:text-5xl">{t('calc.title')}</h1>
         <p className="mt-3 max-w-xl text-[17px] text-muted">
@@ -502,13 +488,15 @@ const Calculator: React.FC = () => {
 
       {/* Phone: always-visible result bar, tap to jump to the full breakdown */}
       <button type="button" onClick={() => document.getElementById('step-4')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-        className="fixed inset-x-0 bottom-0 z-40 flex min-h-[64px] items-center justify-between gap-3 border-t border-ink bg-ink px-5 pb-[env(safe-area-inset-bottom)] text-left text-white lg:hidden">
+        className="fixed bottom-[calc(84px+env(safe-area-inset-bottom))] left-3 z-40 flex w-[calc(100%-1.5rem)] min-h-[56px] items-center justify-between gap-3 rounded-2xl bg-ink px-5 text-left text-white shadow-lg lg:hidden">
         <span>
           <span className="block text-[12px] text-white/70">{t('calc.result')}</span>
           <span className="block font-display text-2xl font-semibold leading-tight text-leaf">{tk(r.totalTax)}</span>
         </span>
         <span className="rounded-full bg-leaf px-4 py-2 text-[14px] font-semibold text-ink">See breakdown</span>
       </button>
+
+      <TabBar active="calc" waText={message} />
 
       <ChatBubble hide={false} title="Not sure about your numbers?" body="Send us what you have. We will work it out with you." waText={message} />
     </div>

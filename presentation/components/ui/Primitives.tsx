@@ -16,11 +16,12 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
+// 3D keys: a solid lower edge that squashes down when pressed.
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand text-white hover:bg-brand-deep',
-  accent: 'bg-leaf text-ink hover:bg-[#8cc93f]',
-  outline: 'border border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-white',
-  light: 'bg-white text-ink hover:bg-paper',
+  primary: 'bg-brand text-white hover:bg-brand-deep [--edge:#071d4d]',
+  accent: 'bg-leaf text-ink hover:bg-[#8cc93f] [--edge:#4a7f12]',
+  outline: 'border border-ink/30 bg-surface text-ink hover:border-ink hover:bg-ink hover:text-white [--edge:rgb(var(--c-ink)/.35)]',
+  light: 'bg-white text-ink hover:bg-paper [--edge:#aab4c5]',
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -34,7 +35,7 @@ export const Button: React.FC<ButtonProps> = ({
   target,
   disabled,
 }) => {
-  const classes = `inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md px-5 py-3 text-[15px] font-semibold transition-[background-color,color,border-color,transform] duration-150 active:scale-[.97] motion-reduce:active:scale-100 ${
+  const classes = `inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md px-5 py-3 text-[15px] font-semibold transition-[background-color,color,border-color,transform,box-shadow] duration-100 shadow-[0_4px_0_0_var(--edge)] active:translate-y-[3px] active:shadow-[0_1px_0_0_var(--edge)] motion-reduce:active:translate-y-0 ${
     fullWidth ? 'w-full' : ''
   } ${variants[variant]} ${className}`;
 

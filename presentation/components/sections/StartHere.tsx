@@ -47,7 +47,7 @@ const StartHere: React.FC<{ onTierChange: (i: number) => void }> = ({ onTierChan
           <div>
             <p className="text-sm text-muted">Fees start at</p>
             <p className="font-display text-4xl font-semibold tracking-tight text-brand">{tiers[pick.tier].price}</p>
-            <p className="mt-1 text-[13px] text-muted">for {tiers[pick.tier].label}. Move the slider above to change.</p>
+            <p className="mt-1 text-[13px] text-muted">{`for ${tiers[pick.tier].label}. Move the slider above to change.`}</p>
           </div>
           <div>
             <p className="text-sm font-semibold">We will help with</p>
@@ -61,7 +61,7 @@ const StartHere: React.FC<{ onTierChange: (i: number) => void }> = ({ onTierChan
           </div>
           <div className="md:col-span-3">
             <Button variant="accent" href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(`Hello InTaxBD, I am a ${pick.label.toLowerCase()} and would like to file my return.`)}`}>
-              <MessageCircle className="h-5 w-5" aria-hidden="true" /> Start as {pick.label}
+              <MessageCircle className="h-5 w-5" aria-hidden="true" /> {`Start as ${pick.label}`}
             </Button>
           </div>
         </div>

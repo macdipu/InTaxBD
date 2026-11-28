@@ -98,7 +98,8 @@ const Navbar: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsMobileOpen(false);
-    if (href.startsWith('#/')) {
+    // Off the landing page (e.g. on the calculator) the section does not exist: go to it via the hash.
+    if (href.startsWith('#/') || !document.getElementById(href.substring(1))) {
       window.location.hash = href;
       return;
     }
@@ -144,8 +145,10 @@ const Navbar: React.FC = () => {
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   aria-current={isActive ? 'true' : undefined}
-                  className={`whitespace-nowrap py-1.5 text-[15px] font-medium transition-colors ${
-                    isActive ? 'text-ink' : 'text-muted hover:text-ink'
+                  className={`whitespace-nowrap text-[15px] transition-colors ${
+                    link.href === '#/calculator'
+                      ? 'relative rounded-full bg-leaf px-3.5 py-1.5 font-semibold text-ink shadow-[0_3px_0_0_#4a7f12] hover:bg-[#8cc93f] active:translate-y-[2px] active:shadow-[0_1px_0_0_#4a7f12]'
+                      : `py-1.5 font-medium ${isActive ? 'text-ink' : 'text-muted hover:text-ink'}`
                   }`}
                 >
                   {t('nav.' + link.name, link.name)}
@@ -224,7 +227,7 @@ const Navbar: React.FC = () => {
         aria-hidden={!isMobileOpen}
         {...(!isMobileOpen ? { inert: true } : {})}
       >
-        <p className="text-sm font-medium text-muted">Filing for Assessment Year {year.assessmentYear}</p>
+        <p className="text-sm font-medium text-muted">{`Filing for Assessment Year ${year.assessmentYear}`}</p>
         <nav aria-label="Mobile" className="mt-3 flex flex-col">
           {navLinks.map((link, i) => {
             const active = activeSection === link.href.substring(1);
@@ -235,7 +238,7 @@ const Navbar: React.FC = () => {
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={`flex items-center justify-between border-b border-rule py-3.5 font-display text-[28px] font-semibold tracking-tight transition-[opacity,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none ${
                   active ? 'text-brand' : 'text-ink'
-                } ${isMobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'}`}
+                } ${link.href === '#/calculator' ? 'rounded-xl bg-leaf/20 px-3' : ''} ${isMobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'}`}
                 style={{ transitionDelay: isMobileOpen ? `${120 + i * 45}ms` : '0ms' }}
               >
                 {t('nav.' + link.name, link.name)}

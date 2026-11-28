@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Home from '../presentation/pages/Home';
 import Calculator from '../presentation/pages/Calculator';
+import ChatSheet from '../presentation/components/widgets/ChatSheet';
 import { LangProvider } from '../presentation/i18n/lang';
 
 // Hash routing: "#/calculator" shows the tax calculator, anything else is the landing page.
@@ -28,7 +29,10 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-paper font-sans text-ink selection:bg-leaf selection:text-ink">
-      <LangProvider>{calc ? <Calculator /> : <Home />}</LangProvider>
+      <LangProvider>
+        {calc ? <Calculator /> : <Home />}
+        <ChatSheet />
+      </LangProvider>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useLang } from '../../i18n/lang';
 import React from 'react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { Rule, Tick } from '../ui/Motion';
@@ -8,6 +9,7 @@ import { scrollToId } from '../layout/Navbar';
 const startingTier: Record<string, number> = { individual: 1, business: 3, special: 1 };
 
 const Services: React.FC<{ onTierChange: (i: number) => void }> = ({ onTierChange }) => {
+  const { lang, tx } = useLang();
   const services = ContentRepository.getServices();
   const additional = ContentRepository.getAdditionalServices();
 
@@ -32,7 +34,9 @@ const Services: React.FC<{ onTierChange: (i: number) => void }> = ({ onTierChang
               </p>
             </div>
             <p className="mt-6 max-w-md text-[15px] text-muted">
-              We also handle {additional.slice(0, -1).join(', ')} and {additional[additional.length - 1]}.
+              {lang === 'bn'
+                ? `আমরা ${additional.map(tx).join(' ও ')} এর কাজও করি।`
+                : `We also handle ${additional.slice(0, -1).join(', ')} and ${additional[additional.length - 1]}.`}
             </p>
             <Button
               variant="primary"

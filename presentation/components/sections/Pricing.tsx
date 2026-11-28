@@ -1,3 +1,4 @@
+import { useLang } from '../../i18n/lang';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { MessageCircle, BadgePercent } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
@@ -10,6 +11,7 @@ interface PricingProps {
 }
 
 const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
+  const { lang } = useLang();
   const tiers = ContentRepository.getPricing();
   const contact = ContentRepository.getContact();
   const year = ContentRepository.getTaxYear();
@@ -119,7 +121,7 @@ const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
           {/* Your fee */}
           <div className="mt-6 flex flex-col gap-4 rounded-xl bg-night p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6 on-dark">
             <div aria-live="polite">
-              <p className="text-sm text-white/60">Your fee for {tier.label}</p>
+              <p className="text-sm text-white/60">{`Your fee for ${tier.label}`}</p>
               <p className="mt-1 font-display text-4xl font-semibold leading-none tracking-tight text-leaf">
                 <Odometer value={tier.price} />
               </p>
@@ -141,7 +143,15 @@ const Pricing: React.FC<PricingProps> = ({ tierIndex, onTierChange }) => {
                   First time with us, or referred by someone?
                 </p>
                 <p className="mt-1 text-[15px] leading-relaxed text-muted">
-                  Feel free to contact us for <PenMark delay={400}>special pricing</PenMark>.
+                  {lang === 'bn' ? (
+                    <>
+                      <PenMark delay={400}>বিশেষ দামের</PenMark> জন্য নির্দ্বিধায় যোগাযোগ করুন।
+                    </>
+                  ) : (
+                    <>
+                      Feel free to contact us for <PenMark delay={400}>special pricing</PenMark>.
+                    </>
+                  )}
                 </p>
               </div>
             </div>

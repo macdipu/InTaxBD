@@ -1,3 +1,4 @@
+import { useLang } from '../../i18n/lang';
 import React, { useRef, useState } from 'react';
 import { Phone, Mail, Globe, MessageCircle, Loader2, BadgePercent, ChevronDown } from 'lucide-react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
@@ -20,6 +21,7 @@ const validate = (f: Record<FormKey, string>): Errors => {
 };
 
 export const About: React.FC = () => {
+  const { lang } = useLang();
   const leader = ContentRepository.getLeadership();
   const team = [
     ['CA professionals', 'Chartered accountants for audit, accounts and financial statements'],
@@ -95,9 +97,19 @@ export const About: React.FC = () => {
             <div data-reveal className="mt-10 rounded-xl bg-surface p-5 md:mt-12 md:p-8">
               <h3 className="font-display text-2xl font-semibold tracking-tight">What we stand for</h3>
               <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-ink/85">
-                We prepare every return with <PenMark delay={400}>integrity</PenMark>, file it in{' '}
-                <PenMark delay={700}>compliance</PenMark> with the Income Tax Act 2023, and check the figures with{' '}
-                <PenMark delay={1000}>precision</PenMark>. Your information is shared only with the NBR.
+                {lang === 'bn' ? (
+                  <>
+                    আমরা প্রতিটা রিটার্ন বানাই <PenMark delay={400}>সততার</PenMark> সাথে, আয়কর আইন ২০২৩ মেনে{' '}
+                    <PenMark delay={700}>নিয়মমাফিক</PenMark> জমা দিই, আর অঙ্কগুলো দেখি <PenMark delay={1000}>নিখুঁতভাবে</PenMark>।
+                    আপনার তথ্য শুধু NBR-কে দেওয়া হয়।
+                  </>
+                ) : (
+                  <>
+                    We prepare every return with <PenMark delay={400}>integrity</PenMark>, file it in{' '}
+                    <PenMark delay={700}>compliance</PenMark> with the Income Tax Act 2023, and check the figures with{' '}
+                    <PenMark delay={1000}>precision</PenMark>. Your information is shared only with the NBR.
+                  </>
+                )}
               </p>
               <div className="mt-6">
                 <p className="font-display text-xl font-semibold tracking-tight text-brand">{leader.name}</p>

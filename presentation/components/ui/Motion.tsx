@@ -1,8 +1,11 @@
+import { useLang } from '../../i18n/lang';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView, usePrefersReducedMotion } from '../../motion/hooks';
 
 // --- Write: each word rises out of a mask. Parent needs [data-reveal]. ---
-export const MaskWords: React.FC<{ text: string; delay?: number }> = ({ text, delay = 0 }) => (
+export const MaskWords: React.FC<{ text: string; delay?: number }> = ({ text: raw, delay = 0 }) => {
+  const text = useLang().tx(raw);
+  return (
   <>
     <span className="sr-only">{text}</span>
     <span aria-hidden="true">
@@ -16,7 +19,8 @@ export const MaskWords: React.FC<{ text: string; delay?: number }> = ({ text, de
       ))}
     </span>
   </>
-);
+  );
+};
 
 // --- Rule: a ledger line that draws in. Parent needs [data-reveal]. ---
 export const Rule: React.FC<{ className?: string; delay?: number }> = ({ className = 'text-ink', delay = 0 }) => (

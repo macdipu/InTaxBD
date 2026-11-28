@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { translateBn } from './bn';
 
 export type Lang = 'en' | 'bn';
 
@@ -41,9 +42,9 @@ const dict = {
 } as const;
 
 type Key = keyof (typeof dict)['en'];
-interface Ctx { lang: Lang; setLang: (l: Lang) => void; t: (k: Key | string, fallback?: string) => string }
+interface Ctx { lang: Lang; setLang: (l: Lang) => void; t: (k: Key | string, fallback?: string) => string; tx: (english: string) => string }
 
-const LangContext = createContext<Ctx>({ lang: 'en', setLang: () => {}, t: (k, f) => f ?? k });
+const LangContext = createContext<Ctx>({ lang: 'en', setLang: () => {}, t: (k, f) => f ?? k, tx: (e) => e });
 
 export const LangProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [lang, setLangState] = useState<Lang>(() => {
@@ -55,7 +56,9 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try { localStorage.setItem('intaxbd-lang', l); } catch { /* ignore */ }
   };
   const t = (k: string, fallback?: string) => (dict[lang] as Record<string, string>)[k] ?? fallback ?? (dict.en as Record<string, string>)[k] ?? k;
-  return <LangContext.Provider value={{ lang, setLang, t }}>{children}</LangContext.Provider>;
+  const tx = (english: string) => (lang === 'bn' ? translateBn(english) : english);
+  useDomTranslate(lang);
+  return <LangContext.Provider value={{ lang, setLang, t, tx }}>{children}</LangContext.Provider>;
 };
 
 export const useLang = () => useContext(LangContext);
@@ -68,4 +71,83 @@ export const LangToggle: React.FC<{ className?: string }> = ({ className = '' })
       {lang === 'en' ? 'বাং' : 'EN'}
     </button>
   );
+};
+
+
+// ---- Whole-page translation -------------------------------------------------
+// In Bangla mode every visible text node and a few attributes are looked up in the dictionary (bn.ts).
+// Originals are remembered so English can be restored, and a MutationObserver keeps newly rendered
+// content translated. Text that is not in the dictionary stays English.
+const ATTRS = ['aria-label', 'placeholder', 'title', 'alt'] as const;
+const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'CODE']);
+
+const useDomTranslate = (lang: Lang) => {
+  useEffect(() => {
+    const textOrig = new Map<Text, { en: string; bn: string }>();
+    const attrOrig = new Map<Element, Record<string, { en: string; bn: string }>>();
+    const originalTitle = document.title;
+    let busy = false;
+
+    const doText = (node: Text) => {
+      const parent = node.parentElement;
+      if (!parent || SKIP.has(parent.tagName) || parent.closest('[data-no-translate]')) return;
+      const rec = textOrig.get(node);
+      if (rec && node.data === rec.bn) return; // already translated by us
+      const en = node.data; // new or React-updated English text
+      const bn = translateBn(en);
+      if (bn !== en) { textOrig.set(node, { en, bn }); node.data = bn; } else textOrig.delete(node);
+    };
+    const doAttrs = (el: Element) => {
+      if (el.closest('[data-no-translate]')) return;
+      for (const a of ATTRS) {
+        const v = el.getAttribute(a);
+        if (!v) continue;
+        const rec = attrOrig.get(el)?.[a];
+        if (rec && v === rec.bn) continue;
+        const bn = translateBn(v);
+        if (bn !== v) {
+          const r = attrOrig.get(el) ?? {};
+          r[a] = { en: v, bn };
+          attrOrig.set(el, r);
+          el.setAttribute(a, bn);
+        }
+      }
+    };
+    const walk = (root: Node) => {
+      if (root.nodeType === Node.TEXT_NODE) return doText(root as Text);
+      if (root.nodeType !== Node.ELEMENT_NODE) return;
+      const el = root as Element;
+      if (SKIP.has(el.tagName)) return;
+      doAttrs(el);
+      const tw = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+      let n: Node | null = tw.nextNode();
+      while (n) {
+        n.nodeType === Node.TEXT_NODE ? doText(n as Text) : doAttrs(n as Element);
+        n = tw.nextNode();
+      }
+    };
+
+    if (lang !== 'bn') return;
+    document.title = 'InTaxBD - বাংলাদেশে আয়কর রিটার্ন জমা';
+    const run = (fn: () => void) => { busy = true; try { fn(); } finally { busy = false; } };
+    run(() => walk(document.body));
+    const mo = new MutationObserver((muts) => {
+      if (busy) return;
+      run(() => {
+        for (const m of muts) {
+          if (m.type === 'characterData') doText(m.target as Text);
+          else if (m.type === 'attributes') doAttrs(m.target as Element);
+          else m.addedNodes.forEach((n) => walk(n));
+        }
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: [...ATTRS] });
+
+    return () => {
+      mo.disconnect();
+      textOrig.forEach((rec, node) => { if (node.isConnected && node.data === rec.bn) node.data = rec.en; });
+      attrOrig.forEach((rec, el) => Object.entries(rec).forEach(([a, r]) => { if (el.getAttribute(a) === r.bn) el.setAttribute(a, r.en); }));
+      document.title = originalTitle;
+    };
+  }, [lang]);
 };

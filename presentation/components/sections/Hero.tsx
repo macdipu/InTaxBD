@@ -95,7 +95,7 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
             <Button variant="outline" href="#how-it-works" onClick={(e) => { e.preventDefault(); scrollToId('how-it-works'); }}>
               {t('hero.how')}
             </Button>
-            <Button variant="outline" href="#/calculator">
+            <Button variant="accent" href="#/calculator" className="relative">
               <Calculator className="h-4 w-4" aria-hidden="true" /> {t('calc.nav')}
             </Button>
           </div>
@@ -235,7 +235,7 @@ const Hero: React.FC<HeroProps> = ({ tierIndex, onTierChange }) => {
           </div>
 
           {/* Mobile: secondary links sit under the slip */}
-          <Button variant="primary" fullWidth href="#/calculator" className="mt-6 lg:hidden">
+          <Button variant="accent" fullWidth href="#/calculator" className="relative mt-6 lg:hidden">
             <Calculator className="h-4 w-4" aria-hidden="true" /> {t('calc.nav')}
           </Button>
           <div className="mt-3 grid grid-cols-2 gap-3 lg:hidden">

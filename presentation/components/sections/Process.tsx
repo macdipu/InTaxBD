@@ -1,3 +1,4 @@
+import { useLang } from '../../i18n/lang';
 import React, { useEffect, useRef, useState } from 'react';
 import { Section, SectionHeading, Button } from '../ui/Primitives';
 import { Stamp, Tick, PenMark } from '../ui/Motion';
@@ -7,6 +8,7 @@ import { scrollToId } from '../layout/Navbar';
 import ReturnTracker from '../widgets/ReturnTracker';
 
 const Process: React.FC = () => {
+  const { lang } = useLang();
   const steps = ContentRepository.getProcessSteps();
   const listRef = useRef<HTMLOListElement>(null);
   const railRef = useRef<HTMLSpanElement>(null);
@@ -60,10 +62,16 @@ const Process: React.FC = () => {
             <SectionHeading
               title="Six steps from first message to filed return"
               intro={
-                <>
-                  You are only needed at <PenMark delay={500}>the start</PenMark> and at{' '}
-                  <PenMark delay={800}>confirmation</PenMark>. We handle the rest.
-                </>
+                lang === 'bn' ? (
+                  <>
+                    আপনাকে লাগবে শুধু <PenMark delay={500}>শুরুতে</PenMark> আর <PenMark delay={800}>অনুমোদনের সময়</PenMark>। বাকি সব আমরা সামলাই।
+                  </>
+                ) : (
+                  <>
+                    You are only needed at <PenMark delay={500}>the start</PenMark> and at{' '}
+                    <PenMark delay={800}>confirmation</PenMark>. We handle the rest.
+                  </>
+                )
               }
             />
             <ReturnTracker steps={steps} reached={reached} />
@@ -109,7 +117,7 @@ const Process: React.FC = () => {
                         done ? 'text-ink' : 'text-ink/55'
                       }`}
                     >
-                      <span className="sr-only">Step {i + 1}: </span>
+                      <span className="sr-only">{`Step ${i + 1}:`} </span>
                       {step.title}
                     </h3>
                     <p className="mt-1 max-w-md text-[16px] leading-relaxed text-muted">{step.description}</p>
